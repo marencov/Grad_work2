@@ -1,0 +1,5 @@
+supabase-config.js
+node_modules
+.next
+out
+.env.local

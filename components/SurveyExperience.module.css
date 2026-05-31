@@ -1,0 +1,108 @@
+.snapScroll {
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.slide {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 80px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+}
+
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.32;
+}
+
+.titleSlide {
+  background: var(--paper);
+}
+
+.questionSlide {
+  background: #f6f0e5;
+}
+
+.choiceSlide {
+  background: #fff8e2;
+  padding: clamp(10px, 1.5vw, 18px);
+}
+
+.reasonSlide {
+  background: #eef4f0;
+}
+
+.resultsSlide {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 22px;
+  background: #f7f7f0;
+}
+
+.analysisVisible {
+  gap: 16px;
+}
+
+.progress {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  z-index: 10;
+  display: grid;
+  gap: 10px;
+  transform: translateY(-50%);
+}
+
+.progressDot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  cursor: pointer;
+}
+
+.activeProgressDot {
+  background: var(--ink);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 30;
+  translate: -50% 0;
+  max-width: min(680px, calc(100vw - 32px));
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 18px;
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.errorToast {
+  background: var(--red);
+}
+
+@media (max-width: 760px) {
+  .slide {
+    padding: 22px;
+  }
+
+  .progress {
+    right: 10px;
+  }
+}

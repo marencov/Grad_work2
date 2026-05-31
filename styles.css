@@ -1,0 +1,579 @@
+/*
+  styles.css は見た目を担当するファイルです。
+
+  初心者向けポイント:
+  - HTMLが「構造」、CSSが「見た目」、JavaScriptが「動き」です。
+  - ここでは高橋メソッド風に、文字を大きく、中央に、明朝体で配置しています。
+  - scroll-snap-type と scroll-snap-align が、スクロールをスライドごとに止める中心です。
+*/
+
+:root {
+  --ink: #111111;
+  --paper: #fffdf7;
+  --paper-2: #f1eadb;
+  --red: #d43c2f;
+  --blue: #185b80;
+  --green: #1f7a61;
+  --line: rgba(17, 17, 17, 0.18);
+  --shadow: rgba(17, 17, 17, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family:
+    "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", "Times New Roman",
+    serif;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+/*
+  ここがスクロールスナップの親要素です。
+  height: 100vh で画面の高さぴったりにし、
+  overflow-y: auto でこの中だけスクロールできるようにします。
+*/
+.snap-scroll {
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+/*
+  1枚のスライドです。
+  place-items: center で中身を縦横中央に置いています。
+*/
+.slide {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 80px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+}
+
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.32;
+}
+
+.slide-title {
+  background: var(--paper);
+}
+
+.slide-question {
+  background: #f6f0e5;
+}
+
+.slide-choice {
+  background: #fff8e2;
+}
+
+.slide-reason {
+  background: #eef4f0;
+}
+
+.slide-results {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 22px;
+  background: #f7f7f0;
+}
+
+.kicker {
+  margin: 0 0 18px;
+  color: var(--green);
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(5.5rem, 17vw, 18rem);
+}
+
+h2 {
+  font-size: clamp(5rem, 15vw, 16rem);
+}
+
+.choice-heading {
+  margin-bottom: clamp(24px, 4vw, 56px);
+  font-size: clamp(3.8rem, 9vw, 10rem);
+}
+
+.icon-text-button,
+.submit-button,
+.small-button {
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.icon-text-button {
+  display: block;
+  margin: 34px auto 0;
+  padding: 14px 28px;
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.icon-text-button:hover,
+.submit-button:hover,
+.small-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px var(--shadow);
+}
+
+.submit-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+  transform: none;
+  box-shadow: none;
+}
+
+.choice-grid {
+  width: min(1180px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 38px);
+}
+
+/*
+  選択肢ボタンです。
+  JavaScript が is-selected クラスを付けると、背景色が反転します。
+*/
+.choice-card {
+  min-height: clamp(260px, 34vw, 420px);
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 3vw, 40px);
+  border: 3px solid var(--ink);
+  background: rgba(255, 253, 247, 0.76);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.choice-card span {
+  font-size: clamp(3.2rem, 7.5vw, 8.8rem);
+  font-weight: 900;
+  line-height: 1.02;
+  text-align: center;
+}
+
+.choice-card.is-selected {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.reason-form {
+  width: min(900px, 100%);
+  display: grid;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border: 3px solid var(--ink);
+  background: rgba(255, 253, 247, 0.84);
+  color: var(--ink);
+  padding: 20px;
+  font-size: clamp(1.3rem, 2.6vw, 2.4rem);
+  line-height: 1.55;
+  outline: none;
+}
+
+textarea:focus {
+  box-shadow: 0 0 0 5px rgba(31, 122, 97, 0.2);
+}
+
+.submit-button {
+  min-height: 64px;
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.results-head h2 {
+  font-size: clamp(3.6rem, 8vw, 9rem);
+}
+
+.chart-wrap {
+  position: relative;
+  width: min(1080px, 100%);
+  min-height: 0;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+}
+
+.scatter-chart {
+  width: 100%;
+  max-height: 58vh;
+  border: 3px solid var(--ink);
+  background: rgba(255, 253, 247, 0.9);
+  transition:
+    max-height 420ms ease,
+    box-shadow 420ms ease;
+}
+
+.slide-results.is-analysis-visible .scatter-chart {
+  max-height: 54vh;
+  box-shadow: 0 18px 34px rgba(17, 17, 17, 0.12);
+}
+
+.chart-axis {
+  stroke: var(--ink);
+  stroke-width: 4;
+}
+
+.chart-guide {
+  stroke: rgba(17, 17, 17, 0.16);
+  stroke-width: 2;
+}
+
+.chart-label,
+.chart-count {
+  fill: var(--ink);
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+}
+
+.chart-label {
+  font-size: 28px;
+}
+
+.chart-count {
+  font-size: 24px;
+}
+
+.point {
+  stroke: var(--ink);
+  stroke-width: 3;
+  cursor: pointer;
+}
+
+.point.choice-poopCurry {
+  fill: var(--red);
+}
+
+.point.choice-curryPoop {
+  fill: var(--blue);
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 20;
+  width: min(360px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 0 16px 34px var(--shadow);
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  pointer-events: none;
+}
+
+.small-button {
+  min-width: 144px;
+  min-height: 48px;
+  padding: 10px 18px;
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.overall-panel {
+  width: min(1080px, 100%);
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  background: rgba(255, 253, 247, 0.86);
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.overall-panel {
+  align-self: stretch;
+}
+
+.slide-results.is-analysis-visible .overall-panel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.analysis-title,
+.analysis-empty {
+  margin: 0;
+}
+
+.analysis-title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--green);
+}
+
+.analysis-empty {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.analysis-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.analysis-list div {
+  min-width: 0;
+}
+
+.analysis-list dt {
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: var(--green);
+}
+
+.analysis-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.overall-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.overall-meta {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.overall-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.overall-overview-block {
+  grid-column: 1 / -1;
+  padding-right: 0;
+}
+
+.overall-content h3 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  color: var(--green);
+}
+
+.overall-content p,
+.overall-content ul {
+  margin: 0;
+  padding: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.overall-overview-block p {
+  font-size: clamp(1.3rem, 2.4vw, 2.2rem);
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.overall-content ul {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+}
+
+.chart-callout rect {
+  fill: rgba(255, 253, 247, 0.94);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.chart-callout {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.slide-results.is-analysis-visible .chart-callout {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chart-callout text {
+  fill: var(--ink);
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.chart-callout.is-funny rect {
+  fill: #fff8e2;
+}
+
+.chart-callout.is-standout rect {
+  fill: #eef4f0;
+}
+
+.progress {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  z-index: 10;
+  display: grid;
+  gap: 10px;
+  transform: translateY(-50%);
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--ink);
+  background: transparent;
+}
+
+.progress-dot.is-active {
+  background: var(--ink);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 30;
+  translate: -50% 0;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 18px;
+  font-family:
+    "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+@media (max-width: 760px) {
+  .slide {
+    padding: 22px;
+  }
+
+  h1 {
+    font-size: clamp(4.6rem, 22vw, 8rem);
+  }
+
+  h2 {
+    font-size: clamp(4rem, 20vw, 7.4rem);
+  }
+
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-card {
+    min-height: 210px;
+  }
+
+  .choice-card span {
+    font-size: clamp(3rem, 14vw, 5.2rem);
+  }
+
+  .progress {
+    right: 10px;
+  }
+
+  .analysis-list {
+    grid-template-columns: 1fr;
+  }
+
+  .overall-head {
+    display: grid;
+  }
+
+  .overall-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

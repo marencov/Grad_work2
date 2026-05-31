@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>さぁどっち？ | Scrollytelling Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!--
+      このHTMLは、プレゼンテーション風の「スクローリーテリング」サイトの骨組みです。
+
+      初心者向けポイント:
+      - <section class="slide"> が1ページぶんのスライドです。
+      - main.snap-scroll に CSS の scroll-snap をかけて、1ページずつ止まるようにしています。
+      - data-step は Scrollama / JavaScript が「今どのページか」を判定するための目印です。
+      - React / Next.js に移す場合も、基本の部品分けはこの section 単位で考えるとわかりやすいです。
+    -->
+    <main class="snap-scroll" id="slides">
+      <section class="slide slide-title" data-step="title">
+        <p class="kicker">Scroll Snap + Scrollama prototype</p>
+        <h1>選択は<br />語る</h1>
+        <button class="icon-text-button" type="button" data-scroll-to="question">
+          はじめる
+        </button>
+      </section>
+
+      <section class="slide slide-question" id="question" data-step="question">
+        <p class="kicker">Page 2</p>
+        <h2>さぁ<br />どっち？</h2>
+        <button class="icon-text-button" type="button" data-scroll-to="choice">
+          選ぶ
+        </button>
+      </section>
+
+      <section class="slide slide-choice" id="choice" data-step="choice">
+        <p class="kicker">Page 3</p>
+        <h2 class="choice-heading">究極の<br />二択</h2>
+
+        <!--
+          この2つのボタンが回答の「選択肢」です。
+          data-choice の値を JavaScript が読み取り、選択状態として保存します。
+        -->
+        <div class="choice-grid" aria-label="二択の回答">
+          <button class="choice-card" type="button" data-choice="poopCurry">
+            <span>うんこ味の<br />カレー</span>
+          </button>
+          <button class="choice-card" type="button" data-choice="curryPoop">
+            <span>カレー味の<br />うんこ</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="slide slide-reason" id="reason" data-step="reason">
+        <p class="kicker">Page 4</p>
+        <h2>なぜ<br />そっち？</h2>
+
+        <!--
+          form は「入力欄と送信ボタンをまとめる箱」です。
+          submit イベントを script.js で受け取り、localStorage に保存します。
+        -->
+        <form class="reason-form" id="answerForm">
+          <label class="screen-reader-only" for="reasonInput">
+            選んだ理由
+          </label>
+          <textarea
+            id="reasonInput"
+            name="reason"
+            rows="4"
+            maxlength="180"
+            placeholder="理由を書く"
+            required
+          ></textarea>
+          <button class="submit-button" type="submit">送信</button>
+        </form>
+      </section>
+
+      <section class="slide slide-results" id="results" data-step="results">
+        <div class="results-head">
+          <p class="kicker">Page 5</p>
+          <h2>選択の<br />分布</h2>
+        </div>
+
+        <!--
+          SVG はHTMLの中に直接書ける図形エリアです。
+          script.js が <circle> を追加して、保存された回答を点として表示します。
+        -->
+        <div class="chart-wrap">
+          <svg
+            id="scatterChart"
+            class="scatter-chart"
+            viewBox="0 0 900 520"
+            role="img"
+            aria-label="どちらを選んだかを示す散布図"
+          ></svg>
+          <div class="tooltip" id="tooltip" hidden></div>
+        </div>
+
+        <section class="overall-panel" aria-live="polite">
+          <div class="overall-head">
+            <p class="analysis-title">Overall analysis</p>
+            <p class="overall-meta" id="overallMeta">全体解析はまだありません。</p>
+          </div>
+          <div class="overall-content" id="overallContent" hidden>
+            <div class="overall-overview-block">
+              <h3>全体の傾向と考察</h3>
+              <p id="overallOverview"></p>
+            </div>
+            <div>
+              <h3>考察メモ</h3>
+              <ul id="overallInsights"></ul>
+            </div>
+            <div>
+              <h3>光る意見</h3>
+              <ul id="overallStandouts"></ul>
+            </div>
+            <div>
+              <h3>面白い意見</h3>
+              <ul id="overallFunny"></ul>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!--
+      progress は現在のページ番号を示す小さなナビゲーションです。
+      JavaScript が active クラスを付け替えます。
+    -->
+    <nav class="progress" aria-label="ページ位置">
+      <span class="progress-dot is-active" data-dot="title"></span>
+      <span class="progress-dot" data-dot="question"></span>
+      <span class="progress-dot" data-dot="choice"></span>
+      <span class="progress-dot" data-dot="reason"></span>
+      <span class="progress-dot" data-dot="results"></span>
+    </nav>
+
+    <div class="toast" id="toast" hidden>送信しました</div>
+
+    <!--
+      Scrollama本体です。
+      ネットにつながらない場合でも script.js 側の IntersectionObserver で代替します。
+    -->
+    <script src="https://unpkg.com/scrollama"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase-config.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

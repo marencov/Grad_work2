@@ -1,0 +1,13 @@
+[functions.analyze-answer]
+# このプロトタイプはログインなしの匿名アンケートなので、
+# フロントエンドの anon key から Edge Function を呼べるようにします。
+#
+# 注意:
+# verify_jwt = false にすると、このFunction URLを知っている人は呼び出せます。
+# 本番ではレート制限、Turnstile、独自トークン、ログイン必須化などを検討してください。
+verify_jwt = false
+
+[functions.analyze-overall]
+# 全体解析もログインなしの展示プロトタイプから呼ぶため、JWT検証をオフにします。
+# 公開運用ではレート制限やBot対策を検討してください。
+verify_jwt = false
