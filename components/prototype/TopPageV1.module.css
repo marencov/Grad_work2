@@ -341,14 +341,12 @@
 
 .hotTopicTrackStatic .hotTopicSet {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 380px));
-  justify-content: start;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%;
 }
 
 .hotTopicTrackStatic .hotTopicSet .topicCard {
   width: 100%;
-  max-width: 380px;
 }
 
 .hotTopicViewport:hover .hotTopicTrackAnimated,
@@ -2683,14 +2681,12 @@
 
   .hotTopicTrackAnimated .hotTopicSet:first-child {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 380px));
-    justify-content: start;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 100%;
   }
 
   .hotTopicTrackAnimated .hotTopicSet .topicCard {
     width: 100%;
-    max-width: 380px;
   }
 
   .hotTopicCloneSet {
