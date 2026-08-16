@@ -519,37 +519,39 @@ function AttributeCollectorSection({ debate }) {
         </div>
         <div className={styles.attributePanel}>
           {ATTRIBUTE_FIELDS.map((field) => (
-            <div className={styles.attributeGroup} data-field={field.key} key={field.key}>
-              <h3>{field.label}</h3>
-              <div className={styles.optionGrid}>
-                {field.options.map((option) => (
-                  <button
-                    className={attributes[field.key] === option ? styles.selectedPill : ""}
-                    type="button"
-                    key={option}
-                    onClick={() => updateAttribute(field.key, option)}
-                  >
-                    {option}
-                  </button>
-                ))}
+            <Fragment key={field.key}>
+              <div className={styles.attributeGroup} data-field={field.key}>
+                <h3>{field.label}</h3>
+                <div className={styles.optionGrid}>
+                  {field.options.map((option) => (
+                    <button
+                      className={attributes[field.key] === option ? styles.selectedPill : ""}
+                      type="button"
+                      key={option}
+                      onClick={() => updateAttribute(field.key, option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+              {field.key === "medicalExperience" && needsMedicalProfession ? (
+                <div className={`${styles.attributeGroup} ${styles.medicalProfessionGroup}`}>
+                  <label htmlFor="medical-profession">具体的な職種</label>
+                  <select
+                    id="medical-profession"
+                    value={attributes.medicalProfession ?? ""}
+                    onChange={(event) => updateAttribute("medicalProfession", event.target.value)}
+                  >
+                    <option value="" disabled>職種を選んでください</option>
+                    {MEDICAL_PROFESSIONS.map((profession) => (
+                      <option value={profession} key={profession}>{profession}</option>
+                    ))}
+                  </select>
+                </div>
+              ) : null}
+            </Fragment>
           ))}
-          {needsMedicalProfession ? (
-            <div className={`${styles.attributeGroup} ${styles.medicalProfessionGroup}`}>
-              <label htmlFor="medical-profession">具体的な職種</label>
-              <select
-                id="medical-profession"
-                value={attributes.medicalProfession ?? ""}
-                onChange={(event) => updateAttribute("medicalProfession", event.target.value)}
-              >
-                <option value="" disabled>職種を選んでください</option>
-                {MEDICAL_PROFESSIONS.map((profession) => (
-                  <option value={profession} key={profession}>{profession}</option>
-                ))}
-              </select>
-            </div>
-          ) : null}
           <div className={styles.formActions}>
             <button
               type="button"
