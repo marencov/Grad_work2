@@ -15,8 +15,9 @@ export function OpinionArticle({ children }) {
   return <article className={styles.article}><p className={styles.articleLabel}>制作者の意見</p>{children}</article>;
 }
 
-export function OpinionBadge({ children, icon = "idea" }) {
-  return <div className={styles.badge}><span className={styles.badgeIcon}><Icon name={icon} /></span><span>{children}</span></div>;
+export function OpinionBadge({ children, icon = "idea", tone = "against" }) {
+  const toneClass = tone === "for" ? styles.badgeFor : tone === "neutral" ? styles.badgeNeutral : "";
+  return <div className={`${styles.badge} ${toneClass}`}><span className={styles.badgeIcon}><Icon name={icon} /></span><span>{children}</span></div>;
 }
 
 export function OpinionLead({ children }) {
@@ -37,8 +38,4 @@ export function Callout({ children }) {
 
 export function Figure({ src, alt, caption }) {
   return <figure className={styles.figure}><img src={src} alt={alt} />{caption && <figcaption>{caption}</figcaption>}</figure>;
-}
-
-export function SourceList({ items = [] }) {
-  return <footer className={styles.sources}><h3>参考資料</h3><ul>{items.map((item) => <li key={item.url || item.title}>{item.url ? <a href={item.url} target="_blank" rel="noreferrer">{item.title}</a> : item.title}{item.organization ? ` — ${item.organization}` : ""}</li>)}</ul></footer>;
 }
