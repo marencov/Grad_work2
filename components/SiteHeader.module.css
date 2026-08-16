@@ -77,7 +77,8 @@
   }
 
   .brandTitle {
-    display: none;
+    display: inline;
+    font-size: 18px;
   }
 
   .nav {
