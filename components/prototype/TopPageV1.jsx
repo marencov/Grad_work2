@@ -8,6 +8,7 @@ import {
 } from "@/hooks/useDebateQuestion";
 import styles from "@/components/prototype/TopPageV1.module.css";
 import CreatorOpinionContent from "@/components/creator-opinion/CreatorOpinionContent";
+import SiteHeader from "@/components/SiteHeader";
 
 const BASE_PATH = "/CrossTalk";
 
@@ -162,7 +163,7 @@ export default function TopPageV1() {
 
   return (
     <main className={styles.page}>
-      <TopBar />
+      <SiteHeader />
       <Hero />
       <HotTopics topics={topics} selectedSlug={selectedQuestionSlug} onSelectTopic={selectTopic} />
       <Categories />
@@ -174,23 +175,6 @@ export default function TopPageV1() {
       />
       <Toast message={debate.message || debate.error} tone={debate.error ? "error" : "success"} />
     </main>
-  );
-}
-
-function TopBar() {
-  return (
-    <header className={styles.topBar}>
-      <a className={styles.brand} href="#top" aria-label="CrossTalk top">
-        <img src={ASSETS.logo} alt="" className={styles.brandLogo} />
-        <span className={styles.brandTitle}>CrossTalk</span>
-      </a>
-      <nav className={styles.nav} aria-label="Main navigation">
-        <a href="#topics">テーマ一覧</a>
-        <a href="#map">データを見る</a>
-        <a href="#top">このサイトについて</a>
-        <a href="#analysis">FAQ</a>
-      </nav>
-    </header>
   );
 }
 

@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Scrollytelling Survey Prototype",
-  description: "Survey, Supabase, AI analysis, and information visualization.",
+  title: "CrossTalk",
+  description: "医療のちがいを集めて、よりよい対話をつくる参加型Webサイトです。",
 };
 
 export default function RootLayout({ children }) {

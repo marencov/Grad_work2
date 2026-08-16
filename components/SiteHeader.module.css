@@ -1,0 +1,93 @@
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  padding: 0 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.84);
+  backdrop-filter: blur(16px);
+}
+
+.brand,
+.nav a {
+  color: #111827;
+  text-decoration: none;
+}
+
+.brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  align-items: center;
+  height: 72px;
+}
+
+.brandLogo {
+  display: block;
+  width: auto;
+  height: 36px;
+}
+
+.brandTitle {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.nav {
+  display: flex;
+  gap: clamp(20px, 4vw, 56px);
+  align-items: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.nav a {
+  padding: 26px 0;
+  white-space: nowrap;
+  transition: color 160ms ease;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  color: #2563eb;
+}
+
+@media (max-width: 760px) {
+  .topBar {
+    align-items: flex-start;
+    padding: 0 16px;
+  }
+
+  .brand {
+    height: 60px;
+  }
+
+  .brandLogo {
+    height: 28px;
+  }
+
+  .brandTitle {
+    display: none;
+  }
+
+  .nav {
+    max-width: calc(100vw - 76px);
+    gap: 18px;
+    overflow-x: auto;
+    font-size: 12px;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav a {
+    padding: 22px 0;
+  }
+}
