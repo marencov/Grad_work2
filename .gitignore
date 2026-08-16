@@ -4,3 +4,4 @@ node_modules
 .next-dev
 out
 .env.local
+CrossTalk-xserver-latest.zip
