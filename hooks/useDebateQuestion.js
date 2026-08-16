@@ -135,20 +135,6 @@ export const DEBATE_QUESTION_CATALOG = [
     answerCount: 0,
   },
   {
-    slug: "taking-medicine-with-side-effects",
-    title: "副作用がある薬でも\n必要なら使用するべき？",
-    description: "治療によって得られる効果と、副作用による負担をどのように比較するかを考える問いです。",
-    fieldTags: ["副作用", "医療安全", "リスク評価"],
-    axisXLabel: "治療効果↔副作用の回避",
-    axisYLabel: "治療リスクへの許容",
-    choices: {
-      pro: { label: "効果がリスクを上回るなら飲むべき", description: "必要な治療なら副作用の可能性があっても受け入れる" },
-      con: { label: "無理に飲むべきでない", description: "副作用が少しでもあるなら慎重になるべき" },
-    },
-    reasonTagSeeds: ["治療効果", "副作用の重さ", "生活の質", "病気の深刻さ", "代替治療", "本人の意思"],
-    answerCount: 0,
-  },
-  {
     slug: "license-revocation-for-medical-errors",
     title: "医療ミスをした医師は\n免許剥奪すべき？",
     description: "医療ミスを無くすためには、処分を重くするべきでしょうか？",
@@ -202,20 +188,6 @@ export const DEBATE_QUESTION_CATALOG = [
       con: { label: "認めるべきでない", description: "生命保護と濫用防止を優先し別の支援を充実させる" },
     },
     reasonTagSeeds: ["本人の自己決定", "耐えがたい苦痛", "生命の尊重", "制度の濫用", "家族への影響", "緩和ケア"],
-    answerCount: 0,
-  },
-  {
-    slug: "shorter-consultations-to-reduce-waiting",
-    title: "待ち時間を短くするために\n診察時間を短縮すべき？",
-    description: "多くの患者を早く診察することと、一人ひとりに丁寧な診療を行うことのバランスを考える問いです。",
-    fieldTags: ["待ち時間", "診察時間", "医療資源"],
-    axisXLabel: "診療効率↔診療の丁寧さ",
-    axisYLabel: "時間短縮への支持",
-    choices: {
-      pro: { label: "ある程度短縮すべき", description: "診療を効率化して全体の待ち時間を減らすべき" },
-      con: { label: "診察時間を守るべき", description: "待ち時間より十分な説明と診察を優先すべき" },
-    },
-    reasonTagSeeds: ["待ち時間", "診療の丁寧さ", "説明不足", "医療現場の効率", "患者数", "診療内容による調整"],
     answerCount: 0,
   },
   {

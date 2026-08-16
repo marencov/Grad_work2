@@ -10,7 +10,6 @@ import MedicalAdvertisingOpinion from "@/content/creator-opinions/liberalization
 import PersonalResponsibilityOpinion from "@/content/creator-opinions/personal-responsibility-medical-costs.mdx";
 import PrivatePracticeOpinion from "@/content/creator-opinions/prescription-in-private-practice.mdx";
 import EuthanasiaOpinion from "@/content/creator-opinions/legalization-of-active-euthanasia.mdx";
-import WaitingTimeOpinion from "@/content/creator-opinions/shorter-consultations-to-reduce-waiting.mdx";
 import AntibioticsOpinion from "@/content/creator-opinions/antibiotics-for-common-cold.mdx";
 
 const OPINIONS = {
@@ -26,7 +25,6 @@ const OPINIONS = {
   "personal-responsibility-medical-costs": PersonalResponsibilityOpinion,
   "prescription-in-private-practice": PrivatePracticeOpinion,
   "legalization-of-active-euthanasia": EuthanasiaOpinion,
-  "shorter-consultations-to-reduce-waiting": WaitingTimeOpinion,
   "antibiotics-for-common-cold": AntibioticsOpinion,
 };
 
