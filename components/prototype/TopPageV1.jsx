@@ -73,11 +73,34 @@ function assetPath(path) {
   return `${BASE_PATH}${path}`;
 }
 
+function useResponsiveDisplayLimits() {
+  const [limits, setLimits] = useState({ topics: 10, themes: 12 });
+
+  useEffect(() => {
+    const updateLimits = () => {
+      if (window.innerWidth <= 760) {
+        setLimits({ topics: 4, themes: 6 });
+      } else if (window.innerWidth <= 1024) {
+        setLimits({ topics: 6, themes: 8 });
+      } else {
+        setLimits({ topics: 10, themes: 12 });
+      }
+    };
+
+    updateLimits();
+    window.addEventListener("resize", updateLimits);
+    return () => window.removeEventListener("resize", updateLimits);
+  }, []);
+
+  return limits;
+}
+
 export default function TopPageV1() {
   const [selectedQuestionSlug, setSelectedQuestionSlug] = useState("life-support-treatment");
   const [selectedTheme, setSelectedTheme] = useState("");
   const debate = useDebateQuestion(selectedQuestionSlug);
   const topics = useDebateTopics();
+  const displayLimits = useResponsiveDisplayLimits();
 
   const themes = useMemo(() => {
     const themeMap = new Map();
@@ -146,10 +169,16 @@ export default function TopPageV1() {
         topics={topics}
         selectedSlug={selectedQuestionSlug}
         selectedTheme={selectedTheme}
+        initialTopicCount={displayLimits.topics}
         onSelectTopic={selectTopic}
         onClearTheme={() => setSelectedTheme("")}
       />
-      <Categories themes={themes} selectedTheme={selectedTheme} onSelectTheme={selectTheme} />
+      <Categories
+        themes={themes}
+        selectedTheme={selectedTheme}
+        initialThemeCount={displayLimits.themes}
+        onSelectTheme={selectTheme}
+      />
       <ScrollytellingGeneral
         debate={debate}
         topics={topics}
@@ -184,15 +213,25 @@ function Hero() {
   );
 }
 
-function HotTopics({ topics, selectedSlug, selectedTheme, onSelectTopic, onClearTheme }) {
+function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onSelectTopic, onClearTheme }) {
   const [showAllTopics, setShowAllTopics] = useState(false);
-  const initialTopicCount = 10;
 
   const filteredTopics = selectedTheme
     ? topics.filter((topic) => topic.tags?.includes(selectedTheme))
     : topics;
   const visibleTopics = showAllTopics ? filteredTopics : filteredTopics.slice(0, initialTopicCount);
   const hasMoreTopics = visibleTopics.length < filteredTopics.length;
+  const shouldMarquee = !selectedTheme && visibleTopics.length > 3;
+
+  const renderTopicCards = (isClone = false) => visibleTopics.map((topic) => (
+    <TopicCard
+      key={`${isClone ? "clone-" : ""}${topic.slug || topic.title}`}
+      topic={topic}
+      isActive={!isClone && selectedSlug === topic.slug}
+      isClone={isClone}
+      onSelect={() => onSelectTopic(topic.slug)}
+    />
+  ));
 
   return (
     <section id="topics" className={styles.contentBand}>
@@ -208,29 +247,30 @@ function HotTopics({ topics, selectedSlug, selectedTheme, onSelectTopic, onClear
           <button type="button" onClick={onClearTheme}>すべてのテーマを表示</button>
         </div>
       ) : null}
-      <div className={styles.topicGrid}>
-        {visibleTopics.map((topic) => (
-          <TopicCard
-            key={topic.slug || topic.title}
-            topic={topic}
-            isActive={selectedSlug === topic.slug}
-            onSelect={() => onSelectTopic(topic.slug)}
-          />
-        ))}
+      <div className={styles.hotTopicViewport}>
+        <div className={`${styles.hotTopicTrack} ${shouldMarquee ? styles.hotTopicTrackAnimated : styles.hotTopicTrackStatic}`}>
+          <div className={styles.hotTopicSet}>{renderTopicCards()}</div>
+          {shouldMarquee ? (
+            <div className={`${styles.hotTopicSet} ${styles.hotTopicCloneSet}`} aria-hidden="true">
+              {renderTopicCards(true)}
+            </div>
+          ) : null}
+        </div>
       </div>
     </section>
   );
 }
 
-function TopicCard({ topic, isActive = false, onSelect }) {
+function TopicCard({ topic, isActive = false, isClone = false, onSelect }) {
   return (
     <article
       className={`${styles.topicCard} ${isActive ? styles.topicCardActive : ""}`}
-      role="button"
-      tabIndex={0}
-      aria-pressed={isActive}
+      role={isClone ? undefined : "button"}
+      tabIndex={isClone ? -1 : 0}
+      aria-hidden={isClone || undefined}
+      aria-pressed={isClone ? undefined : isActive}
       onClick={onSelect}
-      onKeyDown={(event) => {
+      onKeyDown={isClone ? undefined : (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
           onSelect();
@@ -268,12 +308,21 @@ function renderBreakLines(value) {
     ));
 }
 
-function Categories({ themes, selectedTheme, onSelectTheme }) {
+function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme }) {
+  const [showAllThemes, setShowAllThemes] = useState(false);
+  const visibleThemes = showAllThemes ? themes : themes.slice(0, initialThemeCount);
+  const hasMoreThemes = visibleThemes.length < themes.length;
+
   return (
     <section className={styles.contentBand}>
-      <SectionHeading title="話題のテーマ" href="#topics" />
+      <TopicSectionHeading
+        title="話題のテーマ"
+        actionLabel={showAllThemes ? "少なく見る →" : "もっと見る →"}
+        onAction={() => setShowAllThemes((current) => !current)}
+        showAction={hasMoreThemes || showAllThemes}
+      />
       <div className={styles.categoryGrid}>
-        {themes.map((theme) => (
+        {visibleThemes.map((theme) => (
           <button
             type="button"
             className={`${styles.categoryCard} ${selectedTheme === theme.label ? styles.categoryCardActive : ""}`}

@@ -317,6 +317,54 @@
   text-underline-offset: 3px;
 }
 
+.hotTopicViewport {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+.hotTopicTrack,
+.hotTopicSet {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+}
+
+.hotTopicTrackAnimated {
+  animation: hotTopicMarquee 90s linear infinite;
+  will-change: transform;
+}
+
+.hotTopicTrackStatic {
+  display: block;
+  width: 100%;
+}
+
+.hotTopicTrackStatic .hotTopicSet {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+
+.hotTopicTrackStatic .hotTopicSet .topicCard {
+  width: auto;
+}
+
+.hotTopicViewport:hover .hotTopicTrackAnimated,
+.hotTopicViewport:focus-within .hotTopicTrackAnimated {
+  animation-play-state: paused;
+}
+
+.hotTopicSet .topicCard {
+  flex: 0 0 clamp(290px, 27vw, 380px);
+  width: clamp(290px, 27vw, 380px);
+}
+
+@keyframes hotTopicMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 14px)); }
+}
+
 .topicCard,
 .categoryCard {
   background: var(--surface);
@@ -714,6 +762,10 @@
   text-align: left;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.topicTags span:nth-child(n + 4) {
+  display: none;
 }
 
 .categoryCard:hover,
@@ -2568,5 +2620,73 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
+  }
+}
+
+/* 話題の自動スクロールはPCだけで有効にし、タッチ端末では操作性を優先する。 */
+@media (max-width: 1024px) {
+  .hotTopicViewport {
+    overflow: visible;
+    mask-image: none;
+  }
+
+  .hotTopicTrack,
+  .hotTopicTrackAnimated,
+  .hotTopicTrackStatic {
+    display: block;
+    width: 100%;
+    animation: none;
+    transform: none;
+  }
+
+  .hotTopicSet,
+  .hotTopicTrackStatic .hotTopicSet {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
+
+  .hotTopicSet .topicCard,
+  .hotTopicTrackStatic .hotTopicSet .topicCard {
+    width: auto;
+  }
+
+  .hotTopicCloneSet {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hotTopicSet,
+  .hotTopicTrackStatic .hotTopicSet {
+    grid-template-columns: 1fr;
+  }
+
+  .topicTags span:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotTopicTrackAnimated {
+    display: block;
+    width: 100%;
+    animation: none;
+    transform: none;
+  }
+
+  .hotTopicTrackAnimated .hotTopicSet:first-child {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .hotTopicTrackAnimated .hotTopicSet .topicCard {
+    width: auto;
+  }
+
+  .hotTopicCloneSet {
+    display: none;
   }
 }
