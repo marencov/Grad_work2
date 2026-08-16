@@ -320,7 +320,6 @@
 .hotTopicViewport {
   width: 100%;
   overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
 }
 
 .hotTopicTrack,
@@ -342,12 +341,14 @@
 
 .hotTopicTrackStatic .hotTopicSet {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(290px, 380px));
+  justify-content: start;
   width: 100%;
 }
 
 .hotTopicTrackStatic .hotTopicSet .topicCard {
-  width: auto;
+  width: 100%;
+  max-width: 380px;
 }
 
 .hotTopicViewport:hover .hotTopicTrackAnimated,
@@ -2653,6 +2654,7 @@
   .hotTopicSet .topicCard,
   .hotTopicTrackStatic .hotTopicSet .topicCard {
     width: auto;
+    max-width: none;
   }
 
   .hotTopicCloneSet {
@@ -2681,12 +2683,14 @@
 
   .hotTopicTrackAnimated .hotTopicSet:first-child {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(290px, 380px));
+    justify-content: start;
     width: 100%;
   }
 
   .hotTopicTrackAnimated .hotTopicSet .topicCard {
-    width: auto;
+    width: 100%;
+    max-width: 380px;
   }
 
   .hotTopicCloneSet {
