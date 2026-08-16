@@ -1,0 +1,14 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="alert">私の意見：かなり慎重に判断すべき</OpinionBadge>
+<OpinionLead>悪い結果が起きたことと、医療過誤があったことは同じではありません。</OpinionLead>
+## 医療過誤と合併症を分ける
+医療過誤は、求められる注意義務に反した過失によって損害が生じた場合などを指します。一方、合併症は適切に実施しても一定確率で起こり得ます。採血の神経損傷、造影剤や薬剤の重いアレルギーなど、ゼロにできないリスクがあります。
+<ExplanationCard title="結果だけで判断しない" icon="question"><p>何が予見できたか、標準的な手順を守ったか、説明と同意は十分だったか、発生後に適切に対応したかを検証する必要があります。</p></ExplanationCard>
+<ConflictPoint leftTitle="厳しい責任追及" leftText="重大な過失や反復する危険行為から患者を守る" rightTitle="安全文化" rightText="処罰だけを強めて報告や検証が隠されることを防ぐ" />
+## 処罰と再発防止は別々に考える
+重大な過失、技量や適応判断に明白な問題があり、それが繰り返される事例はあります。適切に評価し、教育、権限制限、免許処分まで段階的に判断できる仕組みが必要です。同時に、個人を罰するだけで終わらず、組織や手順の問題も改善しなければ事故は減りません。
+<Callout><p><strong>「悪い結果＝処罰」ではない。</strong><br />公正な検証、患者への説明、再発防止、必要な責任追及を両立させることが医療安全につながります。</p></Callout>
+<SourceList items={[{ title: "医療事故調査制度について", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000061201.html" }, { title: "医師行政処分の考え方", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/shingi/shingi-isei_127790.html" }]} />
+</OpinionArticle>

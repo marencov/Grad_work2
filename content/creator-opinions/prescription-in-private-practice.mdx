@@ -1,0 +1,14 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="alert">私の意見：一定の制限が必要</OpinionBadge>
+<OpinionLead>本人が希望し、自由診療で支払うなら何でもよい――とは考えません。</OpinionLead>
+## 医師には、希望をそのまま処方しない責任がある
+薬には適応、禁忌、副作用があります。摂食障害など体重減少が大きな危険になる人へ、減量目的の薬を安易に使えば重大な健康被害につながります。
+<ConflictPoint leftTitle="患者の自己決定" leftText="十分な説明を受け、自費で希望する治療を選びたい" rightTitle="専門職の責任" rightText="医学的妥当性が乏しい処方や危険な使用を拒み、安全を守る" />
+## 適応外使用と、言われるままの処方は違う
+承認された適応外で薬を使うことはあります。しかし、医学的知見に基づき、期待される利益とリスクを比較し、有害事象が起きたときも含めて診療する責任を負って行います。
+<ExplanationCard title="薬は無限に増産できない" icon="balance"><p>美容・減量目的の需要が急増すれば、正規の適応で必要とする患者への供給へ影響することがあります。個人の選択だけでなく、限られた医療資源も考える必要があります。</p></ExplanationCard>
+<Callout><p><strong>自由診療にも医療倫理と安全基準は必要です。</strong><br />処方して終わりではなく、適応判断、説明、経過観察、緊急時対応まで担えることが前提です。</p></Callout>
+<SourceList items={[{ title: "医薬品等を海外から購入しようとされる方へ", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iyakuhin/kojinyunyu/index.html" }, { title: "医療広告ガイドライン", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/kokokukisei/" }]} />
+</OpinionArticle>

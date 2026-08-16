@@ -1,0 +1,22 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="alert">私の意見：迷わず使うべき</OpinionBadge>
+<OpinionLead>心停止は、文字どおり一分一秒を争います。<br />ためらいより救命を優先してほしい。</OpinionLead>
+
+## AEDは、必要なときだけ電気ショックを指示します
+
+反応がなく、普段どおりの呼吸がない人を見つけたら、119番通報、胸骨圧迫、AEDを進めます。AEDは心電図を自動解析し、電気ショックが必要な場合だけ指示します。
+
+<ExplanationCard title="衣服への配慮は、救命と両立できる" icon="idea"><p>周囲の人に協力を求め、上着や布で覆いながらパッドを貼ることはできます。ただし、パッドを正しく貼ることや胸骨圧迫を遅らせないことが最優先です。</p></ExplanationCard>
+
+<ConflictPoint leftTitle="救命する責任" leftText="救命処置が遅れるほど、助かる可能性や良好な回復の可能性が下がる" rightTitle="プライバシーへの不安" rightText="衣服を外すことへのためらいや、誤解される不安がある" />
+
+## 行動した人を責める社会にしない
+
+善意で救命しようとした行為を、性別だけを理由にセクハラのように扱うべきではありません。一方、救助者が安心して行動できるよう、法的保護や教育、周囲が協力する文化を整える議論は必要です。
+
+<Callout><p><strong>完璧でなくてよいから、行動する。</strong><br />119番の指令員の案内を聞き、近くの人へAEDを頼み、できることを始めてください。</p></Callout>
+
+<SourceList items={[{ title: "応急手当WEB講習", organization: "総務省消防庁", url: "https://www.fdma.go.jp/relocation/kyukyukikaku/oukyu/" }, { title: "JRC蘇生ガイドライン", organization: "日本蘇生協議会", url: "https://www.jrc-cpr.org/jrc-guideline-2025/" }]} />
+</OpinionArticle>

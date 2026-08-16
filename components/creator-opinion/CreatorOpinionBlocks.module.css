@@ -1,0 +1,143 @@
+.article {
+  color: #25262b;
+}
+
+.article > h2 {
+  margin: 52px 0 18px;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.35;
+}
+
+.articleLabel {
+  margin: 0 0 14px;
+  color: #777b86;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.article > p,
+.article > ul {
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.article > ul {
+  padding-left: 1.4em;
+}
+
+.badge {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 16px 24px;
+  color: white;
+  background: #d84b4b;
+  border-radius: 999px;
+  font-size: clamp(17px, 2.2vw, 22px);
+  font-weight: 900;
+}
+
+.badgeIcon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  color: #c9504b;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(98 24 24 / 18%);
+}
+
+.badgeIcon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.badge + h2 {
+  margin-top: 46px;
+}
+
+.lead {
+  max-width: 820px;
+  margin: 24px 0 34px;
+  font-size: clamp(22px, 3.5vw, 38px);
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.lead p { margin: 0; }
+
+.card {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 18px;
+  margin: 24px 0;
+  padding: 26px;
+  background: #eef5ff;
+  border-radius: 20px;
+}
+
+.cardIcon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  background: white;
+  border-radius: 16px;
+  color: #2e68a8;
+}
+
+.cardIcon svg { width: 27px; height: 27px; }
+
+.card h3, .conflict h3 { margin: 0 0 8px; }
+.card p, .conflict p, .callout p { margin: 0; line-height: 1.8; }
+
+.conflictGrid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 14px;
+  align-items: stretch;
+  margin: 24px 0;
+}
+
+.conflict {
+  padding: 24px;
+  background: #f5f6f8;
+  border-radius: 18px;
+}
+
+.versus { align-self: center; color: #9699a1; font-weight: 900; }
+
+.callout {
+  margin: 28px 0;
+  padding: 22px 24px;
+  background: #fff4ce;
+  border-left: 5px solid #e6b633;
+  border-radius: 6px 18px 18px 6px;
+}
+
+.figure { margin: 30px 0; }
+.figure img { width: 100%; border-radius: 20px; }
+.figure figcaption { margin-top: 9px; color: #777b86; font-size: 13px; }
+
+.sources {
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: 1px solid #dfe1e6;
+}
+.sources h3 { margin: 0 0 12px; }
+.sources ul { margin: 0; padding-left: 1.2em; line-height: 1.8; }
+
+@media (max-width: 680px) {
+  .conflictGrid { grid-template-columns: 1fr; }
+  .versus { justify-self: center; }
+  .card { grid-template-columns: 42px 1fr; padding: 20px; }
+  .cardIcon { width: 42px; height: 42px; font-size: 20px; }
+  .badge { align-items: flex-start; padding: 14px 18px; }
+  .badgeIcon { width: 32px; height: 32px; }
+  .badgeIcon svg { width: 19px; height: 19px; }
+}

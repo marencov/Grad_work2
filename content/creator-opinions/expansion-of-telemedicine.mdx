@@ -1,0 +1,13 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="balance">私の意見：限定的に増やすべき</OpinionBadge>
+<OpinionLead>医療DXは患者体験と病院の効率を改善できます。<br />ただし、画面越しでは拾えない情報もあります。</OpinionLead>
+## オンラインで十分な診療もある
+安定した慢性疾患の再診、結果説明、服薬相談など、対面でなければならない理由が少ない場面では、通院負担を減らす価値があります。遠隔地や移動が難しい人にも大きな利点があります。
+<ConflictPoint leftTitle="アクセスと効率" leftText="移動・待ち時間を減らし、限られた医療資源を有効に使える" rightTitle="診察情報の不足" rightText="触診、歩き方、息づかい、表情や雰囲気などを十分に確認できない" />
+## 対面でしか分からないこと
+医師は言葉や検査値だけで診断していません。入室時の歩き方、顔色、会話の様子なども含めて総合的に判断します。オンラインで不十分だと判断したら、速やかに対面診療へ切り替える仕組みが必要です。
+<Callout><p><strong>オンラインか対面かではなく、何をオンラインで安全にできるか。</strong><br />適応を選び、対面へつなぐ安全網を持つなら、増やす価値があります。</p></Callout>
+<SourceList items={[{ title: "オンライン診療の適切な実施に関する指針", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryou/rinsyo/index_00010.html" }]} />
+</OpinionArticle>

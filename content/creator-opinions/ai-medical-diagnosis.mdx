@@ -1,0 +1,14 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="balance">私の意見：どちらともいえない</OpinionBadge>
+<OpinionLead>AIは非常に有能です。<br />ただし、正しい診断には正しい情報と、誤りを見抜く人が必要です。</OpinionLead>
+## AIは診断を支える強力な道具
+適切な症状、経過、診察所見、検査結果を入力できれば、鑑別診断の候補を広げ、見落としを減らす可能性があります。一方、入力が不十分なら、もっともらしい誤答を返すこともあります。
+<ConflictPoint leftTitle="AIの強み" leftText="大量の知識を横断し、候補や見落としを短時間で提示できる" rightTitle="臨床の曖昧さ" rightText="患者の言葉、雰囲気、立ち居振る舞い、不確実な経過を文脈として読む必要がある" />
+<ExplanationCard title="AIは責任主体ではない" icon="alert"><p>出力を採用するか、追加検査をするか、患者へどう説明するかという最終判断と責任は、人間と医療組織に残ります。</p></ExplanationCard>
+## 医療は確率と不確実性を扱う
+病気には典型例も非典型例もあり、検査にも偽陽性・偽陰性があります。答えが一つに決まらない状況で、AIを鵜呑みにせず、根拠と患者個別の事情を照合できる専門性が必要です。
+<Callout><p><strong>任せるのではなく、使いこなす。</strong><br />性能評価、監督、説明、責任の仕組みを整えた診断支援として活用するのが現実的です。</p></Callout>
+<SourceList items={[{ title: "保健医療分野AI開発加速コンソーシアム", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/shingi/other-kousei_408914_00001.html" }, { title: "Ethics and governance of artificial intelligence for health", organization: "WHO", url: "https://www.who.int/publications/i/item/9789240029200" }]} />
+</OpinionArticle>

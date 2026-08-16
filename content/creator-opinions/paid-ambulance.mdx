@@ -1,0 +1,58 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+
+<OpinionBadge icon="ambulance">私の意見：一律の有料化には反対</OpinionBadge>
+
+## 今、なぜ問題なのか
+
+<OpinionLead>
+不要不急の利用を減らす必要はありますが、「お金がないから呼べない」という状況は避けるべきです。
+</OpinionLead>
+
+救急車の出動件数が増えると、本当に緊急性の高い人のもとへ到着するまでの時間が延びる可能性があります。一方、有料化は救急要請をためらわせる危険もあります。
+
+明らかな冷やかしや悪質な反復要請は問題です。しかし、結果的に軽症だった利用のすべてが悪質なわけではありません。胸痛、激しい頭痛、子どもの急変など、一般の人が要請時点で重症度を判断するのは困難です。
+
+<ExplanationCard title="問題は利用件数だけではない" icon="ambulance">
+  <p>利用者が自分で緊急性を正確に判断することは困難です。結果的に軽症だったことと、呼んだ時点で不要不急だと分かっていたことは区別する必要があります。</p>
+</ExplanationCard>
+
+## どこに齟齬があるのか
+
+<ConflictPoint
+  leftTitle="救急資源を守る"
+  leftText="不要不急の利用を減らし、重症者を優先したい"
+  rightTitle="受診機会を守る"
+  rightText="費用を理由に、必要な人が要請をためらう事態を防ぎたい"
+/>
+
+<ConflictPoint
+  leftTitle="結果からの判断"
+  leftText="軽症だったなら有料でよい"
+  rightTitle="要請時点の判断"
+  rightText="症状だけでは重症かどうか分からない場合がある"
+/>
+
+## 私はこう考える
+
+一律に料金を取るのではなく、救急相談窓口の周知、相談アプリの改善、明らかな反復的・悪質利用への個別対応を先に進めるべきだと考えます。
+
+同時に、救急車はいつでも当然に来る無限のサービスではありません。高齢化などで救急需要は今後も増えると見込まれています。迷う症状では救急相談を利用し、緊急性が高いと感じたらためらわず119番する、という使い分けを社会全体で共有する必要があります。
+
+<Callout>
+  <p><strong>例外をどう設計するかが重要です。</strong><br />子ども、高齢者、生活困窮者、判断が難しい症状などを考えると、単純な有料・無料の二択だけでは制度を評価できません。</p>
+</Callout>
+
+## それでも残る問い
+
+- 「不要不急」を誰が、どの時点で判定するのか
+- 悪質利用と、判断を誤った利用をどう区別するのか
+- 有料化以外に、現場の負担を減らす方法はないか
+
+<SourceList items={[
+  { title: "救急車利用マニュアル A guide for ambulance services", organization: "総務省消防庁", url: "https://www.fdma.go.jp/publication/portal/post2.html" },
+  { title: "令和6年版消防白書：救急業務を取り巻く課題", organization: "総務省消防庁", url: "https://www.fdma.go.jp/publication/hakusho/r6/chapter2/section5/68144.html" }
+]} />
+
+</OpinionArticle>

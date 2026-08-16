@@ -1,0 +1,18 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="alert">私の意見：風邪には使うべきではない</OpinionBadge>
+<OpinionLead>抗菌薬は「強い風邪薬」ではありません。<br />ウイルスによる感冒には効きません。</OpinionLead>
+
+## 効かないだけではない
+
+不要な抗菌薬でも、下痢、発疹、アレルギーなどの副作用は起こり得ます。さらに、抗菌薬が効きにくい耐性菌を増やし、将来、本当に必要な感染症の治療を難しくします。
+
+<ConflictPoint leftTitle="患者から見える安心" leftText="薬を出してもらった方が、早く治りそうで安心する" rightTitle="医療者から見える適正使用" rightText="効かない薬を出すことは、本人にも社会にも不利益になる" />
+
+<ExplanationCard title="抗菌薬が必要な病気はあります" icon="question"><p>細菌性肺炎など、抗菌薬が必要な感染症では適切に使います。「風邪に使わない」と「感染症に使わない」は別の話です。経過が悪いときは再評価が必要です。</p></ExplanationCard>
+
+<Callout><p><strong>未来の治療薬を守る。</strong><br />必要な人へ、必要な薬を、必要な期間だけ使う。それが抗菌薬適正使用です。</p></Callout>
+
+<SourceList items={[{ title: "薬剤耐性（AMR）対策・抗微生物薬適正使用の手引き", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000120172.html" }]} />
+</OpinionArticle>

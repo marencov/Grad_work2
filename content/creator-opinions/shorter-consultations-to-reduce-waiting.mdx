@@ -1,0 +1,14 @@
+import { OpinionArticle, OpinionBadge, OpinionLead, ExplanationCard, ConflictPoint, Callout, SourceList } from "@/components/creator-opinion/CreatorOpinionBlocks";
+
+<OpinionArticle>
+<OpinionBadge icon="alert">私の意見：待ち時間は長すぎる</OpinionBadge>
+<OpinionLead>本当にすみません。<br />でも、裏で休んでいるから遅いわけではありません。</OpinionLead>
+## 「3時間待ち、3分診療」の裏側
+外来で一人10分診察して30人を診れば、それだけで5時間です。初診では情報収集が必要で、急患が入ることもあります。短い診察の中でも、医療者は重症者を見逃さないよう判断を続けています。昼食を取れない日も珍しくありません。
+<ConflictPoint leftTitle="患者の時間" leftText="体調が悪い中で長時間待つ負担は大きく、予定も立てられない" rightTitle="診療の安全" rightText="必要な問診・診察・説明を削れば、見逃しや納得できない医療につながる" />
+## 診察を短くするだけでは解決しない
+予約の平準化、事前問診、タスク分担、結果説明のオンライン化、地域の診療所との役割分担など、診察の質を落とさず待ち時間を減らす工夫が必要です。
+<ExplanationCard title="大病院がいつも最適とは限らない" icon="idea"><p>安定した慢性疾患などでは、身近なかかりつけ医の方が継続的に診てもらいやすく、待ち時間が短いこともあります。必要時に専門病院へつなぐ連携が大切です。</p></ExplanationCard>
+<Callout><p><strong>長い待ち時間を当然にしない。</strong><br />現場の努力だけに頼らず、予約、業務、デジタル化、地域連携を組み合わせて改善すべきです。</p></Callout>
+<SourceList items={[{ title: "外来機能報告・紹介受診重点医療機関", organization: "厚生労働省", url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000095525_00012.html" }]} />
+</OpinionArticle>
