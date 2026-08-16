@@ -46,6 +46,7 @@ const MEDICAL_WORKER_VALUES = ATTRIBUTE_FIELDS.find((field) => field.key === "me
 const CARE_EXPERIENCE_VALUES = ATTRIBUTE_FIELDS.find((field) => field.key === "caregivingExperience").options;
 const MEDICAL_PROFESSIONS = [
   "医師",
+  "薬剤師",
   "看護師",
   "リハビリテーション職",
   "検査・放射線技師",
@@ -54,7 +55,6 @@ const MEDICAL_PROFESSIONS = [
   "管理栄養士",
   "医療系事務",
   "介護職",
-  "薬剤師",
   "医療・福祉系学生",
   "その他",
   "回答しない",
