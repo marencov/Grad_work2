@@ -35,7 +35,7 @@
   fill: var(--ink);
   font-family:
     "Yu Gothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .chartTitle {
@@ -112,13 +112,13 @@
   margin: 0 0 8px;
   color: var(--green);
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .tooltipReason {
   margin: 0;
   font-size: 1.12rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.65;
   overflow-wrap: anywhere;
 }

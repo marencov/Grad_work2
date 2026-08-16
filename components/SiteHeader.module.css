@@ -34,7 +34,7 @@
 
 .brandTitle {
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1;
 }
 
@@ -43,7 +43,7 @@
   gap: clamp(20px, 4vw, 56px);
   align-items: center;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .nav a {

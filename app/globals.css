@@ -26,12 +26,14 @@ html {
 body {
   color: var(--ink);
   background: var(--paper);
-  font-family:
-    "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", "Times New Roman",
-    serif;
+  font-family: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 400;
+  font-synthesis-weight: none;
 }
 
 button,
+input,
+select,
 textarea {
   font: inherit;
 }

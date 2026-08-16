@@ -2,7 +2,7 @@
   min-height: 100vh;
   color: #111827;
   background: #f8fafc;
-  font-family: Inter, "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-family: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
 }
 
 .page * {
@@ -23,7 +23,7 @@
   margin: 0 0 12px;
   color: #2563eb;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -82,7 +82,7 @@
 .faqItem summary {
   padding: 24px 28px;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -133,7 +133,7 @@
   display: grid;
   gap: 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .form input,
@@ -163,7 +163,7 @@
   justify-self: start;
   padding: 13px 22px;
   color: #fff;
-  font-weight: 800;
+  font-weight: 700;
   background: #2563eb;
   border: 0;
   border-radius: 999px;
@@ -239,7 +239,7 @@
   display: inline-block;
   margin-top: 40px;
   color: #2563eb;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: none;
 }
 

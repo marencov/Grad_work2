@@ -26,7 +26,7 @@
   */
   scroll-snap-type: y proximity;
   font-family:
-    Inter, "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
 }
 
 .page,
@@ -75,7 +75,7 @@
 .brandTitle {
   color: var(--text);
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1;
   letter-spacing: 0;
 }
@@ -105,7 +105,7 @@
   gap: 56px;
   align-items: center;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .hero,
@@ -157,7 +157,7 @@
   margin: 0;
   color: var(--muted);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 2;
 }
 
@@ -227,7 +227,7 @@
   margin: 0;
   color: var(--quiet);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
@@ -257,7 +257,7 @@
   border: 0;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -276,7 +276,7 @@
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .topicGrid,
@@ -397,7 +397,7 @@
   justify-content: space-between;
   color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .topicCard h3 {
@@ -429,13 +429,13 @@
   background: #f1f5f9;
   border-radius: 999px;
   font-size: 10px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .topicChoiceLabels {
   margin-bottom: 10px;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .topicChoiceLabels span:first-child {
@@ -449,7 +449,7 @@
 .topicCardFooter {
   margin-top: 14px;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .topicCardFooter span:first-child {
@@ -464,7 +464,7 @@
   margin: 14px 0 0;
   color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -534,7 +534,7 @@
   color: var(--text);
   cursor: pointer;
   font: inherit;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .helpfulChoices button {
@@ -604,7 +604,7 @@
   gap: 8px;
   color: var(--muted);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .feedbackField textarea {
@@ -637,7 +637,7 @@
   cursor: pointer;
   font: inherit;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .feedbackActions button:disabled {
@@ -739,7 +739,7 @@
   margin: -8px 0 0;
   color: #15803d;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -793,7 +793,7 @@
 .categoryCard p {
   margin-top: 10px;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .categoryCard strong {
@@ -816,7 +816,7 @@
   margin-top: 24px;
   color: var(--blue);
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -874,7 +874,7 @@
   margin: 0;
   color: var(--muted);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .choicePanel {
@@ -920,7 +920,7 @@
 .choiceCard span {
   color: var(--muted);
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .blue {
@@ -945,7 +945,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .answerPanel {
@@ -989,7 +989,7 @@
 .segmentCard span {
   color: #334155;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .splitBar {
@@ -1023,7 +1023,7 @@
 .resultMeta {
   display: grid;
   gap: 10px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .resultMeta:first-child {
@@ -1058,7 +1058,7 @@
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
   cursor: pointer;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .scrollNextButton i {
@@ -1112,7 +1112,7 @@
 .reasonForm label {
   margin: 0 0 10px;
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .medicalProfessionGroup {
@@ -1128,7 +1128,7 @@
   border: 1px solid var(--line);
   border-radius: 12px;
   font: inherit;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .optionGrid {
@@ -1145,7 +1145,7 @@
   border-radius: 999px;
   background: white;
   color: #334155;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .optionGrid button {
@@ -1179,7 +1179,7 @@
 .selectedChoice span {
   color: var(--muted);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .selectedChoice strong {
@@ -1217,7 +1217,7 @@
 .formMeta {
   color: var(--quiet);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .privacyHint {
@@ -1278,7 +1278,7 @@
   grid-template-columns: minmax(120px, auto) 54px 1fr 54px;
   gap: 12px;
   align-items: center;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .ageRowEmpty {
@@ -1333,13 +1333,13 @@
   gap: 4px;
   color: var(--text);
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .segmentNumberRow small {
   color: var(--quiet);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .segmentNumberRow strong {
@@ -1439,13 +1439,13 @@
 
 .opinionBody p {
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.7;
 }
 
 .opinionBody small {
   color: var(--muted);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .opinionBottom {
@@ -1463,7 +1463,7 @@
 .opinionBottom button {
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .tagRow span {
@@ -1487,7 +1487,7 @@
   background: white;
   border-radius: 999px;
   cursor: pointer;
-  font-weight: 900;
+  font-weight: 700;
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms cubic-bezier(.2,.8,.2,1);
 }
 
@@ -1588,7 +1588,7 @@
   border-radius: 999px;
   cursor: pointer;
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .blueMoreButton {
@@ -1613,7 +1613,7 @@
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
   cursor: pointer;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .visualCard {
@@ -1639,7 +1639,7 @@
 .visualCard p {
   color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .radarSvg,
@@ -1657,7 +1657,7 @@
 .scatterSvg text {
   fill: #64748b;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .scatterSvg > text {
@@ -1731,14 +1731,14 @@
 .scatterTooltip p {
   color: var(--text);
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.6;
 }
 
 .scatterTooltip small {
   color: var(--muted);
   font-size: 11px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .legend {
@@ -1746,7 +1746,7 @@
   gap: 18px;
   color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .legend span {
@@ -1818,7 +1818,7 @@
 }
 
 .wordCloud span {
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.1;
 }
 
@@ -1849,7 +1849,7 @@
 .analysisHeader span {
   color: var(--muted);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .analysisHeader h3 {
@@ -1859,7 +1859,7 @@
 .analysisHeader a {
   color: var(--blue);
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -1904,7 +1904,7 @@
   margin-top: 6px;
   color: #475569;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.75;
 }
 
@@ -1912,7 +1912,7 @@
   margin: 0;
   color: var(--muted);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -1928,7 +1928,7 @@
   border-radius: 12px;
   box-shadow: 0 18px 44px rgba(15, 23, 42, 0.22);
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .toastError {
