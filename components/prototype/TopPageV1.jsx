@@ -69,62 +69,32 @@ const TEXT_MINING_STOP_WORDS = new Set([
   "する", "いる", "ある", "なる", "思う", "です", "ます", "から", "ので",
 ]);
 
-const TOPIC_CARDS = [
-  {
-    title: "延命医療は\nされるべき？",
-    answers: "9,215",
-    leftLabel: "義務化すべき",
-    rightLabel: "任意にすべき",
-    leftPercent: 48,
-    rightPercent: 52,
-    tags: ["医療", "社会", "投票"],
-  },
-  {
-    title: "自由診療は\nどこまでやってよい？",
-    answers: "9,215",
-    leftLabel: "義務化すべき",
-    rightLabel: "任意にすべき",
-    leftPercent: 48,
-    rightPercent: 52,
-    tags: ["医療", "社会", "投票"],
-  },
-  {
-    title: "救急車は\n有料化すべき？",
-    answers: "9,215",
-    leftLabel: "義務化すべき",
-    rightLabel: "任意にすべき",
-    leftPercent: 48,
-    rightPercent: 52,
-    tags: ["医療", "社会", "投票"],
-  },
-  {
-    title: "身体拘束は\nやってもよい？",
-    answers: "9,215",
-    leftLabel: "義務化すべき",
-    rightLabel: "任意にすべき",
-    leftPercent: 48,
-    rightPercent: 52,
-    tags: ["医療", "社会", "投票"],
-  },
-];
-
-const CATEGORY_CARDS = [
-  { label: "医療費の負担", subtitle: "公平性と負担のあり方", count: "8,317" },
-  { label: "終末期医療", subtitle: "本人・家族・医療の対話", count: "8,317" },
-  { label: "予防接種", subtitle: "個人の自由と社会の安全", count: "8,317" },
-  { label: "医療AI", subtitle: "技術と人の判断", count: "8,317" },
-  { label: "介護と家族", subtitle: "支える人の現実", count: "8,317" },
-  { label: "地域医療", subtitle: "住む場所で変わる安心", count: "8,317" },
-];
-
 function assetPath(path) {
   return `${BASE_PATH}${path}`;
 }
 
 export default function TopPageV1() {
   const [selectedQuestionSlug, setSelectedQuestionSlug] = useState("life-support-treatment");
+  const [selectedTheme, setSelectedTheme] = useState("");
   const debate = useDebateQuestion(selectedQuestionSlug);
   const topics = useDebateTopics();
+
+  const themes = useMemo(() => {
+    const themeMap = new Map();
+
+    topics.forEach((topic) => {
+      [...new Set(topic.tags ?? [])].forEach((tag) => {
+        const current = themeMap.get(tag) ?? { label: tag, questionCount: 0, answerCount: 0 };
+        current.questionCount += 1;
+        current.answerCount += Number(topic.answers ?? 0);
+        themeMap.set(tag, current);
+      });
+    });
+
+    return [...themeMap.values()].sort(
+      (a, b) => b.answerCount - a.answerCount || b.questionCount - a.questionCount || a.label.localeCompare(b.label, "ja"),
+    );
+  }, [topics]);
 
   useEffect(() => {
     const applySlugFromUrl = () => {
@@ -161,12 +131,25 @@ export default function TopPageV1() {
     }, 80);
   };
 
+  const selectTheme = (theme) => {
+    setSelectedTheme((current) => (current === theme ? "" : theme));
+    window.setTimeout(() => {
+      document.getElementById("topics")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 40);
+  };
+
   return (
     <main className={styles.page}>
       <SiteHeader />
       <Hero />
-      <HotTopics topics={topics} selectedSlug={selectedQuestionSlug} onSelectTopic={selectTopic} />
-      <Categories />
+      <HotTopics
+        topics={topics}
+        selectedSlug={selectedQuestionSlug}
+        selectedTheme={selectedTheme}
+        onSelectTopic={selectTopic}
+        onClearTheme={() => setSelectedTheme("")}
+      />
+      <Categories themes={themes} selectedTheme={selectedTheme} onSelectTheme={selectTheme} />
       <ScrollytellingGeneral
         debate={debate}
         topics={topics}
@@ -201,21 +184,30 @@ function Hero() {
   );
 }
 
-function HotTopics({ topics, selectedSlug, onSelectTopic }) {
+function HotTopics({ topics, selectedSlug, selectedTheme, onSelectTopic, onClearTheme }) {
   const [showAllTopics, setShowAllTopics] = useState(false);
   const initialTopicCount = 10;
 
-  const visibleTopics = showAllTopics ? topics : topics.slice(0, initialTopicCount);
-  const hasMoreTopics = visibleTopics.length < topics.length;
+  const filteredTopics = selectedTheme
+    ? topics.filter((topic) => topic.tags?.includes(selectedTheme))
+    : topics;
+  const visibleTopics = showAllTopics ? filteredTopics : filteredTopics.slice(0, initialTopicCount);
+  const hasMoreTopics = visibleTopics.length < filteredTopics.length;
 
   return (
     <section id="topics" className={styles.contentBand}>
       <TopicSectionHeading
-        title="今みんなが答えている話題"
+        title={selectedTheme ? `「${selectedTheme}」の話題` : "今みんなが答えている話題"}
         actionLabel={showAllTopics ? "少なく見る →" : "すべて見る →"}
         onAction={() => setShowAllTopics((current) => !current)}
         showAction={hasMoreTopics || showAllTopics}
       />
+      {selectedTheme ? (
+        <div className={styles.themeFilterStatus}>
+          <span>{filteredTopics.length}件の設問を表示しています</span>
+          <button type="button" onClick={onClearTheme}>すべてのテーマを表示</button>
+        </div>
+      ) : null}
       <div className={styles.topicGrid}>
         {visibleTopics.map((topic) => (
           <TopicCard
@@ -276,20 +268,26 @@ function renderBreakLines(value) {
     ));
 }
 
-function Categories() {
+function Categories({ themes, selectedTheme, onSelectTheme }) {
   return (
     <section className={styles.contentBand}>
       <SectionHeading title="話題のテーマ" href="#topics" />
       <div className={styles.categoryGrid}>
-        {CATEGORY_CARDS.map((category) => (
-          <article className={styles.categoryCard} key={category.label}>
+        {themes.map((theme) => (
+          <button
+            type="button"
+            className={`${styles.categoryCard} ${selectedTheme === theme.label ? styles.categoryCardActive : ""}`}
+            key={theme.label}
+            aria-pressed={selectedTheme === theme.label}
+            onClick={() => onSelectTheme(theme.label)}
+          >
             <PrototypeIcon />
             <div>
-              <h3>{category.label}</h3>
-              <p>{category.subtitle}</p>
-              <strong>{category.count}</strong>
+              <h3>{theme.label}</h3>
+              <p>{theme.questionCount}件の設問</p>
+              <strong>{theme.answerCount.toLocaleString("ja-JP")}件の回答</strong>
             </div>
-          </article>
+          </button>
         ))}
       </div>
       <a className={styles.startLink} href="#question">
