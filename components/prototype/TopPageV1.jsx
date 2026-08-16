@@ -36,7 +36,7 @@ const ATTRIBUTE_FIELDS = [
   },
   {
     key: "caregivingExperience",
-    label: "身近な人の治療・介護に関わった経験",
+    label: "自分や身近な人の医療・介護に関わった経験",
     options: ["ある", "ない", "回答しない"],
   },
 ];
