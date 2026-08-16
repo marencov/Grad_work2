@@ -224,7 +224,7 @@ function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onS
     : topics;
   const visibleTopics = showAllTopics ? filteredTopics : filteredTopics.slice(0, initialTopicCount);
   const hasMoreTopics = visibleTopics.length < filteredTopics.length;
-  const shouldMarquee = !selectedTheme && visibleTopics.length > 3;
+  const shouldMarquee = !showAllTopics && !selectedTheme && visibleTopics.length > 3;
 
   const renderTopicCards = (isClone = false) => visibleTopics.map((topic) => (
     <TopicCard
