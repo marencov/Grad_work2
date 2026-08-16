@@ -499,7 +499,6 @@ function AttributeCollectorSection({ debate }) {
   };
 
   const needsMedicalProfession = attributes.medicalExperience === "はい";
-  const canContinue = !needsMedicalProfession || Boolean(attributes.medicalProfession);
 
   return (
     <section id="attribute-collector" className={styles.snapSection}>
@@ -555,9 +554,21 @@ function AttributeCollectorSection({ debate }) {
           <div className={styles.formActions}>
             <button
               type="button"
-              disabled={!debate.ownResponseId || debate.status === "saving-attributes" || !canContinue}
+              disabled={!debate.ownResponseId || debate.status === "saving-attributes"}
               onClick={async () => {
-                const saved = await debate.saveAttributes(debate.ownResponseId, attributes);
+                const answeredAttributes = ATTRIBUTE_FIELDS.reduce(
+                  (result, field) => ({
+                    ...result,
+                    [field.key]: attributes[field.key] ?? "回答しない",
+                  }),
+                  { ...attributes },
+                );
+                if (answeredAttributes.medicalExperience === "はい") {
+                  answeredAttributes.medicalProfession = attributes.medicalProfession ?? "回答しない";
+                } else {
+                  delete answeredAttributes.medicalProfession;
+                }
+                const saved = await debate.saveAttributes(debate.ownResponseId, answeredAttributes);
                 if (saved) {
                   document.getElementById("reason-input")?.scrollIntoView({
                     behavior: "smooth",
@@ -638,9 +649,9 @@ function ReasonInputSection({ debate }) {
             </button>
             <button
               type="submit"
-              disabled={!debate.ownResponseId || !reason.trim() || debate.status === "analyzing"}
+              disabled={!debate.ownResponseId || debate.status === "analyzing" || debate.status === "saving-reason"}
             >
-              理由を送信
+              {reason.trim() ? "理由を送信" : "未回答で次へ"}
             </button>
           </div>
         </form>

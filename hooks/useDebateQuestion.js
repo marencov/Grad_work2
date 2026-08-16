@@ -957,8 +957,10 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
 
   const saveReasonAndAnalyze = useCallback(
     async (responseId, reason) => {
-      if (!responseId || !reason.trim()) return null;
-      setStatus("analyzing");
+      if (!responseId) return null;
+      const normalizedReason = reason.trim();
+      const hasReason = Boolean(normalizedReason);
+      setStatus(hasReason ? "analyzing" : "saving-reason");
       setError("");
       const answeredAt = new Date().toISOString();
       const displayEnvironment = getDisplayEnvironment();
@@ -966,8 +968,33 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
       try {
         if (!isSupabaseReady) {
           const state = readLocalState(selectedSlug) ?? { ownResponseId: responseId, responses: fallbackResponses };
+          if (!hasReason) {
+            const responses = state.responses.map((response) =>
+              response.id === responseId
+                ? {
+                    ...response,
+                    reason: "",
+                    analysis: null,
+                    attributes: {
+                      ...(response.attributes ?? {}),
+                      answeredAt,
+                      questionVersion: response.attributes?.questionVersion ?? QUESTION_VERSION,
+                      completionStatus: "completed",
+                      responseDurationSeconds: getResponseDurationSeconds(response.createdAt, answeredAt),
+                      reasonAnswered: false,
+                      ...displayEnvironment,
+                    },
+                  }
+                : response,
+            );
+            writeLocalState(selectedSlug, { ...state, responses });
+            refreshLocal();
+            setStatus("idle");
+            showMessage("理由は未回答として保存しました。");
+            return true;
+          }
           const seedTags = getCatalogQuestion(question.slug).reasonTagSeeds ?? [];
-          const anonymizedReason = redactObviousPersonalInformation(reason.trim());
+          const anonymizedReason = redactObviousPersonalInformation(normalizedReason);
           const existingTags = [
             ...seedTags,
             ...state.responses.flatMap((response) => response.analysis?.reasonTags ?? []),
@@ -990,7 +1017,8 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
                       questionVersion: response.attributes?.questionVersion ?? QUESTION_VERSION,
                       completionStatus: "completed",
                       responseDurationSeconds,
-                      reasonAnonymized: anonymizedReason !== reason.trim(),
+                      reasonAnswered: true,
+                      reasonAnonymized: anonymizedReason !== normalizedReason,
                       reasonAnonymizedAt: answeredAt,
                       ...displayEnvironment,
                     },
@@ -1011,19 +1039,27 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
         const { error: updateError } = await supabaseClient
           .from("debate_responses")
           .update({
-            reason: reason.trim(),
+            reason: normalizedReason,
             attributes: {
               ...(currentResponse?.attributes ?? {}),
               answeredAt,
               questionVersion: currentResponse?.attributes?.questionVersion ?? QUESTION_VERSION,
               completionStatus: "completed",
               responseDurationSeconds,
+              reasonAnswered: hasReason,
               ...displayEnvironment,
             },
           })
           .eq("id", responseId);
 
         if (updateError) throw updateError;
+
+        if (!hasReason) {
+          await refreshRemote();
+          setStatus("idle");
+          showMessage("理由は未回答として保存しました。");
+          return true;
+        }
 
         const { error: analyzeError } = await supabaseClient.functions.invoke(
           "analyze-debate-response",
