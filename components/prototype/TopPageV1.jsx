@@ -47,12 +47,15 @@ const CARE_EXPERIENCE_VALUES = ATTRIBUTE_FIELDS.find((field) => field.key === "c
 const MEDICAL_PROFESSIONS = [
   "医師",
   "看護師",
-  "リハビリ科",
+  "リハビリテーション職",
   "検査・放射線技師",
-  "医療事務",
+  "臨床工学技士",
+  "救急救命士",
+  "管理栄養士",
+  "医療系事務",
   "介護職",
   "薬剤師",
-  "医療系学生",
+  "医療・福祉系学生",
   "その他",
   "回答しない",
 ];
