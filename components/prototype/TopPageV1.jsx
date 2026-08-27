@@ -18,6 +18,21 @@ const ASSETS = {
   icon: assetPath("/images/icons/icon_money.svg"),
 };
 
+const HERO_SLOGANS = [
+  ["みんなの考え", "見てみよう"],
+  ["医療の「ちがい」を集めて", "よりよい対話をつくろう"],
+  ["ちがう視点に", "出会ってみよう"],
+  ["答えのない問いを", "一緒に考えよう"],
+  ["あなたの声から", "対話をはじめよう"],
+  ["いろんな考えを", "未来のヒントに"],
+];
+
+// 一時的にトップページの各一覧から除外する話題。データと個別URLは残す。
+const HIDDEN_TOPIC_SLUGS = new Set([
+  "elderly-copayment-30-percent",
+  "liberalization-of-medical-advertising",
+]);
+
 const ATTRIBUTE_FIELDS = [
   {
     key: "ageGroup",
@@ -82,7 +97,7 @@ function useResponsiveDisplayLimits() {
   useEffect(() => {
     const updateLimits = () => {
       if (window.innerWidth <= 760) {
-        setLimits({ topics: 4, themes: 6 });
+        setLimits({ topics: 8, themes: 6 });
       } else if (window.innerWidth <= 1024) {
         setLimits({ topics: 6, themes: 8 });
       } else {
@@ -104,11 +119,15 @@ export default function TopPageV1() {
   const debate = useDebateQuestion(selectedQuestionSlug);
   const topics = useDebateTopics();
   const displayLimits = useResponsiveDisplayLimits();
+  const visibleTopics = useMemo(
+    () => topics.filter((topic) => !HIDDEN_TOPIC_SLUGS.has(topic.slug)),
+    [topics],
+  );
 
   const themes = useMemo(() => {
     const themeMap = new Map();
 
-    topics.forEach((topic) => {
+    visibleTopics.forEach((topic) => {
       [...new Set(topic.tags ?? [])].forEach((tag) => {
         const current = themeMap.get(tag) ?? { label: tag, questionCount: 0, answerCount: 0 };
         current.questionCount += 1;
@@ -120,7 +139,7 @@ export default function TopPageV1() {
     return [...themeMap.values()].sort(
       (a, b) => b.answerCount - a.answerCount || b.questionCount - a.questionCount || a.label.localeCompare(b.label, "ja"),
     );
-  }, [topics]);
+  }, [visibleTopics]);
 
   useEffect(() => {
     const applySlugFromUrl = () => {
@@ -169,7 +188,7 @@ export default function TopPageV1() {
       <SiteHeader />
       <Hero />
       <HotTopics
-        topics={topics}
+        topics={visibleTopics}
         selectedSlug={selectedQuestionSlug}
         selectedTheme={selectedTheme}
         initialTopicCount={displayLimits.topics}
@@ -182,9 +201,10 @@ export default function TopPageV1() {
         initialThemeCount={displayLimits.themes}
         onSelectTheme={selectTheme}
       />
+      <HowItWorks />
       <ScrollytellingGeneral
         debate={debate}
-        topics={topics}
+        topics={visibleTopics}
         selectedSlug={selectedQuestionSlug}
         onSelectTopic={selectTopic}
       />
@@ -194,14 +214,19 @@ export default function TopPageV1() {
 }
 
 function Hero() {
+  const [slogan, setSlogan] = useState(HERO_SLOGANS[0]);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * HERO_SLOGANS.length);
+    setSlogan(HERO_SLOGANS[randomIndex]);
+  }, []);
+
   return (
     <section id="top" className={styles.hero}>
       <div className={styles.heroText}>
         <h1 className={styles.heroTitle}>
-          <span className={styles.desktopHeroTitleLine}>医療の「ちがい」を集めて</span>
-          <span className={styles.desktopHeroTitleLine}>よりよい対話をつくろう</span>
-          <span className={styles.mobileHeroTitleLine}>みんなの考え</span>
-          <span className={styles.mobileHeroTitleLine}>見てみよう</span>
+          <span>{slogan[0]}</span>
+          <span>{slogan[1]}</span>
         </h1>
         <p>
           あなたはどちらの意見ですか？
@@ -212,6 +237,10 @@ function Hero() {
       <figure className={styles.heroImageCard}>
         <img src={ASSETS.hero} alt="医療対話を表すヒーロービジュアル" />
       </figure>
+      <div className={styles.heroActions}>
+        <a className={styles.heroPrimaryAction} href="#topics">テーマを選んで参加する</a>
+        <a className={styles.heroSecondaryAction} href="#how-it-works">使い方をみる</a>
+      </div>
     </section>
   );
 }
@@ -240,9 +269,6 @@ function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onS
     <section id="topics" className={styles.contentBand}>
       <TopicSectionHeading
         title={selectedTheme ? `「${selectedTheme}」の話題` : "今みんなが答えている話題"}
-        actionLabel={showAllTopics ? "少なく見る →" : "すべて見る →"}
-        onAction={() => setShowAllTopics((current) => !current)}
-        showAction={hasMoreTopics || showAllTopics}
       />
       {selectedTheme ? (
         <div className={styles.themeFilterStatus}>
@@ -260,6 +286,11 @@ function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onS
           ) : null}
         </div>
       </div>
+      {hasMoreTopics ? (
+        <button className={styles.sectionMoreButton} type="button" onClick={() => setShowAllTopics(true)}>
+          もっと見る
+        </button>
+      ) : null}
     </section>
   );
 }
@@ -280,7 +311,10 @@ function TopicCard({ topic, isActive = false, isClone = false, onSelect }) {
         }
       }}
     >
-      <h3>{renderBreakLines(topic.title)}</h3>
+      <h3>
+        <span className={styles.topicTitleDesktop}>{renderBreakLines(topic.title)}</span>
+        <span className={styles.topicTitleMobile}>{renderBreakLines(topic.title)}</span>
+      </h3>
       <div className={styles.topicChoiceLabels}>
         <span>{topic.leftLabel}</span>
         <span>{topic.rightLabel}</span>
@@ -320,9 +354,6 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
     <section className={styles.contentBand}>
       <TopicSectionHeading
         title="話題のテーマ"
-        actionLabel={showAllThemes ? "少なく見る →" : "もっと見る →"}
-        onAction={() => setShowAllThemes((current) => !current)}
-        showAction={hasMoreThemes || showAllThemes}
       />
       <div className={styles.categoryGrid}>
         {visibleThemes.map((theme) => (
@@ -342,9 +373,44 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
           </button>
         ))}
       </div>
+      {hasMoreThemes ? (
+        <button className={styles.sectionMoreButton} type="button" onClick={() => setShowAllThemes(true)}>
+          もっと見る
+        </button>
+      ) : null}
       <a className={styles.startLink} href="#question">
         さっそくはじめてみましょう！
       </a>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    ["01", "テーマを選ぶ", "気になる医療の問いを選びます。"],
+    ["02", "立場を選ぶ", "賛成・反対、いまの考えを答えます。"],
+    ["03", "理由を書く", "そう考えた背景を自分の言葉で残します。"],
+    ["04", "意見を見比べる", "違いと共通点をデータから見つけます。"],
+  ];
+
+  return (
+    <section id="how-it-works" className={styles.mobileFlowSection} aria-labelledby="mobile-flow-title">
+      <p className={styles.mobileFlowEyebrow}>HOW IT WORKS</p>
+      <h2 id="mobile-flow-title">考えを届ける、4つのステップ</h2>
+      <p className={styles.mobileFlowLead}>答えるたびに、みんなの医療観が少しずつ見えてきます。</p>
+      <div className={styles.mobileFlowList}>
+        {steps.map(([number, title, description], index) => (
+          <article className={styles.mobileFlowCard} key={number}>
+            <span>{number}</span>
+            <div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+            {index < steps.length - 1 ? <i aria-hidden="true">↓</i> : null}
+          </article>
+        ))}
+      </div>
+      <a className={styles.mobileFlowCta} href="#question">最初のテーマに答えてみる</a>
     </section>
   );
 }
@@ -1414,15 +1480,10 @@ function SectionHeading({ title, href }) {
   );
 }
 
-function TopicSectionHeading({ title, actionLabel, onAction, showAction }) {
+function TopicSectionHeading({ title }) {
   return (
     <div className={styles.sectionHeading}>
       <h2>{title}</h2>
-      {showAction ? (
-        <button type="button" onClick={onAction}>
-          {actionLabel}
-        </button>
-      ) : null}
     </div>
   );
 }
