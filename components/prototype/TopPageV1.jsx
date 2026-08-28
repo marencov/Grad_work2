@@ -642,7 +642,7 @@ function AnswerMainSection({ debate }) {
         <h2 className={styles.answerTitle}>みんなの回答結果</h2>
         <div
           className={styles.resultPieChart}
-          style={{ "--pro-percent": `${proPercent}%` }}
+          style={{ "--con-percent": `${conPercent}%` }}
           role="img"
           aria-label={`賛成側 ${proPercent}%、反対側 ${conPercent}%`}
         />
