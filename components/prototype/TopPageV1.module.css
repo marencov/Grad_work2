@@ -2926,6 +2926,7 @@
   .mobileFlowList {
     position: relative;
     display: grid;
+    grid-template-columns: 1fr;
     width: 100%;
     gap: 16px;
   }
