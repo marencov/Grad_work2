@@ -639,13 +639,20 @@ function AnswerMainSection({ debate }) {
   return (
     <section id="answer-result" className={styles.snapSection}>
       <div className={styles.answerPanel}>
+        <div className={styles.resultQuestionLabel}>
+          <span>今回のテーマ</span>
+          <p>{renderBreakLines(debate.question.title)}</p>
+        </div>
         <h2 className={styles.answerTitle}>みんなの回答結果</h2>
-        <div
-          className={styles.resultPieChart}
-          style={{ "--con-percent": `${conPercent}%` }}
-          role="img"
-          aria-label={`賛成側 ${proPercent}%、反対側 ${conPercent}%`}
-        />
+        <div className={styles.resultPieWrap}>
+          <div
+            className={styles.resultPieChart}
+            style={{ "--con-percent": `${conPercent}%` }}
+            role="img"
+            aria-label={`賛成側 ${proPercent}%、反対側 ${conPercent}%`}
+          />
+          <span className={styles.resultTotalBadge}>{debate.counts.total}人が回答</span>
+        </div>
         <div className={styles.bigPercentRow}>
           <strong className={styles.blueText}>{proPercent}%</strong>
           <span>vs</span>

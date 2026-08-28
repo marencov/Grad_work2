@@ -1311,10 +1311,51 @@
 }
 
 .answerPanel {
+  position: relative;
   display: grid;
   gap: clamp(14px, 2vh, 22px);
-  width: min(1040px, 100%);
+  width: min(980px, 100%);
+  padding: clamp(24px, 4vh, 42px) clamp(34px, 5vw, 68px);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 8% 16%, rgba(59, 130, 246, 0.09), transparent 28%),
+    radial-gradient(circle at 92% 82%, rgba(244, 91, 105, 0.09), transparent 28%),
+    rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  border-radius: 34px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
   text-align: center;
+}
+
+.resultQuestionLabel {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  justify-self: center;
+  max-width: min(720px, 100%);
+  padding: 7px 14px 7px 8px;
+  color: #334155;
+  background: rgba(248, 250, 252, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.resultQuestionLabel span {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  color: white;
+  background: linear-gradient(135deg, var(--blue), #6366f1);
+  border-radius: 999px;
+  font-size: 10px;
+}
+
+.resultQuestionLabel p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .answerTitle {
@@ -1335,6 +1376,28 @@
   border: 8px solid white;
   border-radius: 50%;
   box-shadow: 0 16px 38px rgba(15, 23, 42, 0.14);
+}
+
+.resultPieWrap {
+  position: relative;
+  justify-self: center;
+}
+
+.resultTotalBadge {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  min-width: 92px;
+  padding: 6px 12px;
+  color: #475569;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+  font-size: 11px;
+  font-weight: 900;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 @media (min-width: 1025px) {
@@ -3269,6 +3332,17 @@
 
   .answerTitle {
     font-size: 30px;
+  }
+
+  .answerPanel {
+    padding: 18px 14px;
+    border-radius: 24px;
+  }
+
+  .resultQuestionLabel {
+    width: 100%;
+    padding-right: 10px;
+    font-size: 10px;
   }
 
   .resultPieChart {
