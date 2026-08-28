@@ -100,7 +100,7 @@ function useResponsiveDisplayLimits() {
   useEffect(() => {
     const updateLimits = () => {
       if (window.innerWidth <= 760) {
-        setLimits({ topics: 8, themes: 6 });
+        setLimits({ topics: 8, themes: 10 });
       } else if (window.innerWidth <= 1024) {
         setLimits({ topics: 6, themes: 8 });
       } else {
@@ -498,10 +498,12 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
             onClick={() => onSelectTheme(theme.label)}
           >
             <PrototypeIcon />
-            <div>
+            <div className={styles.categoryCardBody}>
               <h3>{theme.label}</h3>
-              <p>{theme.questionCount}件の設問</p>
-              <strong>{theme.answerCount.toLocaleString("ja-JP")}件の回答</strong>
+              <div className={styles.categoryMeta}>
+                <span>{theme.questionCount}件の設問</span>
+                <strong>{theme.answerCount.toLocaleString("ja-JP")}件の回答</strong>
+              </div>
             </div>
           </button>
         ))}
