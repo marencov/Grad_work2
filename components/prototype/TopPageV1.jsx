@@ -636,9 +636,6 @@ function ChoiceCard({ choice, isSelected, isBusy, onSelect }) {
       disabled={isBusy}
       onClick={onSelect}
     >
-      <span className={styles.choiceIcon} aria-hidden="true">
-        {choice.side === "pro" ? <HeartPulseIcon /> : <LeafIcon />}
-      </span>
       <span className={styles.choiceCopy}>
         <strong>{choice.label}</strong>
         <i className={styles.choiceDivider} aria-hidden="true" />
@@ -646,24 +643,6 @@ function ChoiceCard({ choice, isSelected, isBusy, onSelect }) {
       </span>
       <i className={styles.choiceArrow} aria-hidden="true">›</i>
     </button>
-  );
-}
-
-function HeartPulseIcon() {
-  return (
-    <svg viewBox="0 0 48 48" role="presentation">
-      <path d="M24 39S8 30 8 18.5C8 12 16 8 24 15c8-7 16-3 16 3.5C40 30 24 39 24 39Z" />
-      <path d="M8 26h9l3-7 6 14 4-9 3 2h8" />
-    </svg>
-  );
-}
-
-function LeafIcon() {
-  return (
-    <svg viewBox="0 0 48 48" role="presentation">
-      <path d="M38 8C24 9 12 17 12 29c0 7 5 11 11 11 12 0 17-14 15-32Z" />
-      <path d="M9 41c7-12 15-19 26-27M16 30c4 0 8 2 11 6M22 23c1-4 1-7 0-10" />
-    </svg>
   );
 }
 

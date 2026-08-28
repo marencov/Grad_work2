@@ -1252,7 +1252,7 @@
 .choiceCard {
   position: relative;
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr) 28px;
+  grid-template-columns: minmax(0, 1fr) 28px;
   gap: 24px;
   align-items: center;
   justify-content: center;
@@ -1312,12 +1312,7 @@
 }
 
 .choiceIcon {
-  display: grid;
-  width: 92px;
-  height: 92px;
-  place-items: center;
-  color: currentColor;
-  border-radius: 50%;
+  display: none;
 }
 
 .choiceCopy {
@@ -1342,6 +1337,7 @@
   font-style: normal;
   font-weight: 300;
   line-height: 1;
+  transform: rotate(90deg);
 }
 
 .choiceIcon svg {
@@ -1360,18 +1356,10 @@
   border-color: #bfdbfe;
 }
 
-.choiceCard.blue .choiceIcon {
-  background: #dbeafe;
-}
-
 .red {
   color: var(--red);
   background: linear-gradient(135deg, #fffafa 0%, var(--red-soft) 100%);
   border-color: #fecaca;
-}
-
-.choiceCard.red .choiceIcon {
-  background: #fee2e2;
 }
 
 .orBadge {
@@ -3380,7 +3368,7 @@
   .choiceCard {
     position: relative;
     display: grid;
-    grid-template-columns: 58px minmax(0, 1fr) 20px;
+    grid-template-columns: minmax(0, 1fr) 20px;
     gap: 13px;
     min-height: 148px;
     padding: 20px 15px 20px 20px;
@@ -3405,31 +3393,7 @@
   }
 
   .choiceIcon {
-    display: grid !important;
-    width: 58px;
-    height: 58px;
-    place-items: center;
-    color: currentColor !important;
-    background: #eef2ff;
-    border-radius: 50%;
-  }
-
-  .choiceCard.blue .choiceIcon {
-    background: #dbeafe;
-  }
-
-  .choiceCard.red .choiceIcon {
-    background: #fee2e2;
-  }
-
-  .choiceIcon svg {
-    width: 38px;
-    height: 38px;
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 2.4;
+    display: none !important;
   }
 
   .choiceCopy {
@@ -3454,6 +3418,7 @@
     font-style: normal;
     font-weight: 300;
     line-height: 1;
+    transform: none;
   }
 
   .questionStack {
