@@ -1311,9 +1311,6 @@
 }
 
 .answerPanel {
-  --blue: #4f8df7;
-  --red: #fb7185;
-
   display: grid;
   gap: clamp(14px, 2vh, 22px);
   width: min(1040px, 100%);
@@ -1331,9 +1328,9 @@
   width: clamp(190px, 26vh, 280px);
   aspect-ratio: 1;
   justify-self: center;
-  background: conic-gradient(from -90deg,
-    var(--blue) 0 var(--pro-percent),
-    var(--red) var(--pro-percent) 100%
+  background: conic-gradient(
+    #3b82f6 0 var(--pro-percent),
+    #f45b69 var(--pro-percent) 100%
   );
   border: 8px solid white;
   border-radius: 50%;
