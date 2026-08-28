@@ -1286,6 +1286,16 @@
   font-weight: 700;
 }
 
+.choiceIcon,
+.choiceArrow,
+.choiceDivider {
+  display: none;
+}
+
+.choiceCopy {
+  display: contents;
+}
+
 .blue {
   color: var(--blue);
   background: var(--blue-soft);
@@ -3259,7 +3269,82 @@
   }
 
   .choiceCard {
-    min-height: 132px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 20px;
+    gap: 13px;
+    min-height: 148px;
+    padding: 20px 15px 20px 20px;
+    overflow: hidden;
+    border-radius: 20px;
+    text-align: left;
+  }
+
+  .choiceCard::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 7px;
+    background: currentColor;
+    content: "";
+  }
+
+  .choiceCard.red::before {
+    right: 0;
+    left: auto;
+  }
+
+  .choiceIcon {
+    display: grid !important;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    color: currentColor !important;
+    background: #eef2ff;
+    border-radius: 50%;
+  }
+
+  .choiceCard.blue .choiceIcon {
+    background: #dbeafe;
+  }
+
+  .choiceCard.red .choiceIcon {
+    background: #fee2e2;
+  }
+
+  .choiceIcon svg {
+    width: 38px;
+    height: 38px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.4;
+  }
+
+  .choiceCopy {
+    display: grid !important;
+    gap: 8px;
+    min-width: 0;
+    color: inherit !important;
+  }
+
+  .choiceDivider {
+    display: block;
+    width: 100%;
+    border-top: 2px dotted currentColor;
+    opacity: 0.55;
+  }
+
+  .choiceArrow {
+    display: block;
+    align-self: center;
+    color: currentColor;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1;
   }
 
   .questionStack {
@@ -3267,11 +3352,53 @@
   }
 
   .choiceCard strong {
-    font-size: 22px;
+    font-size: clamp(17px, 4.7vw, 19px);
+    line-height: 1.35;
+    text-align: left;
   }
 
-  .choiceCard span {
+  .choiceCard .choiceDescription {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .choicePanel {
+    gap: 12px;
+  }
+
+  .orBadge {
+    position: relative;
+    z-index: 1;
+    width: 46px;
+    height: 46px;
+    font-size: 0;
+  }
+
+  .orBadge::before {
     font-size: 13px;
+    content: "VS";
+  }
+
+  .orBadge::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    width: min(72vw, 280px);
+    border-top: 1px dashed #cbd5e1;
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+
+  .questionSection {
+    width: 100%;
+    padding-inline: 14px;
+    background:
+      radial-gradient(circle at 0% 12%, rgba(59, 130, 246, 0.09), transparent 38%),
+      radial-gradient(circle at 100% 88%, rgba(239, 68, 68, 0.08), transparent 38%),
+      var(--bg);
   }
 
   .answerPanel,
