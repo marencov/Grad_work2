@@ -1079,10 +1079,6 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
     async (responseId, reaction) => {
       if (!responseId) return;
       if (reaction !== "naruhodo" && reaction !== "hmm") return;
-      if (!ownResponseId) {
-        showMessage("先にこの質問へ回答するとリアクションできます。");
-        return;
-      }
       if (responseId === ownResponseId) {
         showMessage("自分の意見にはリアクションできません。");
         return;
@@ -1117,7 +1113,9 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
             targetResponseId: responseId,
             actorSide: actor?.choiceSide,
             targetSide: target?.choiceSide,
-            relation: actor?.choiceSide === target?.choiceSide ? "same" : "opposite",
+            relation: actor
+              ? (actor.choiceSide === target?.choiceSide ? "same" : "opposite")
+              : "unanswered",
             reaction,
             questionVersion: actor?.attributes?.questionVersion ?? QUESTION_VERSION,
             occurredAt: new Date().toISOString(),
@@ -1125,6 +1123,11 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
         ];
         writeLocalState(selectedSlug, { ...state, responses, reactionEvents });
         refreshLocal();
+        showMessage(
+          ownResponseId
+            ? "リアクションしました。"
+            : "リアクションありがとう！あなたの考えもぜひ教えてください。",
+        );
         return;
       }
 
@@ -1161,6 +1164,12 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
           }`,
         );
         await refreshRemote().catch(() => {});
+      } else {
+        showMessage(
+          ownResponseId
+            ? "リアクションしました。"
+            : "リアクションありがとう！あなたの考えもぜひ教えてください。",
+        );
       }
     },
     [fallbackResponses, ownResponseId, question.id, refreshLocal, refreshRemote, responses, selectedSlug, showMessage],

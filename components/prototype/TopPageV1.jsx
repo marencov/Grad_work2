@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   DEBATE_QUESTION_CATALOG,
   useDebateQuestion,
@@ -32,6 +32,9 @@ const HIDDEN_TOPIC_SLUGS = new Set([
   "elderly-copayment-30-percent",
   "liberalization-of-medical-advertising",
 ]);
+
+const RESEARCH_CONSENT_VERSION = "2026-08-28";
+const RESEARCH_CONSENT_STORAGE_KEY = "crosstalk-research-consent";
 
 const ATTRIBUTE_FIELDS = [
   {
@@ -119,6 +122,9 @@ export default function TopPageV1() {
   const debate = useDebateQuestion(selectedQuestionSlug);
   const topics = useDebateTopics();
   const displayLimits = useResponsiveDisplayLimits();
+  const [hasResearchConsent, setHasResearchConsent] = useState(false);
+  const [isConsentOpen, setIsConsentOpen] = useState(false);
+  const pendingConsentActionRef = useRef(null);
   const visibleTopics = useMemo(
     () => topics.filter((topic) => !HIDDEN_TOPIC_SLUGS.has(topic.slug)),
     [topics],
@@ -142,6 +148,17 @@ export default function TopPageV1() {
   }, [visibleTopics]);
 
   useEffect(() => {
+    try {
+      const savedConsent = JSON.parse(localStorage.getItem(RESEARCH_CONSENT_STORAGE_KEY) || "null");
+      setHasResearchConsent(
+        savedConsent?.consented === true && savedConsent?.version === RESEARCH_CONSENT_VERSION,
+      );
+    } catch {
+      localStorage.removeItem(RESEARCH_CONSENT_STORAGE_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
     const applySlugFromUrl = () => {
       const requestedSlug = new URLSearchParams(window.location.search).get("slug");
       const isKnownSlug = DEBATE_QUESTION_CATALOG.some(({ slug }) => slug === requestedSlug);
@@ -162,7 +179,7 @@ export default function TopPageV1() {
     return () => window.removeEventListener("popstate", applySlugFromUrl);
   }, []);
 
-  const selectTopic = (slug) => {
+  const continueToTopic = (slug) => {
     setSelectedQuestionSlug(slug);
     const url = new URL(window.location.href);
     url.searchParams.set("slug", slug);
@@ -174,6 +191,39 @@ export default function TopPageV1() {
         block: "start",
       });
     }, 80);
+  };
+
+  const requireResearchConsent = (action) => {
+    if (hasResearchConsent) {
+      action();
+      return;
+    }
+
+    pendingConsentActionRef.current = action;
+    setIsConsentOpen(true);
+  };
+
+  const selectTopic = (slug) => {
+    requireResearchConsent(() => continueToTopic(slug));
+  };
+
+  const acceptResearchConsent = () => {
+    localStorage.setItem(RESEARCH_CONSENT_STORAGE_KEY, JSON.stringify({
+      consented: true,
+      version: RESEARCH_CONSENT_VERSION,
+      consentedAt: new Date().toISOString(),
+    }));
+    setHasResearchConsent(true);
+    setIsConsentOpen(false);
+
+    const pendingAction = pendingConsentActionRef.current;
+    pendingConsentActionRef.current = null;
+    pendingAction?.();
+  };
+
+  const declineResearchConsent = () => {
+    pendingConsentActionRef.current = null;
+    setIsConsentOpen(false);
   };
 
   const selectTheme = (theme) => {
@@ -207,6 +257,12 @@ export default function TopPageV1() {
         topics={visibleTopics}
         selectedSlug={selectedQuestionSlug}
         onSelectTopic={selectTopic}
+        onRequireConsent={requireResearchConsent}
+      />
+      <ResearchConsentDialog
+        isOpen={isConsentOpen}
+        onAccept={acceptResearchConsent}
+        onClose={declineResearchConsent}
       />
       <Toast message={debate.message || debate.error} tone={debate.error ? "error" : "success"} />
     </main>
@@ -242,6 +298,90 @@ function Hero() {
         <a className={styles.heroSecondaryAction} href="#how-it-works">使い方をみる</a>
       </div>
     </section>
+  );
+}
+
+function ResearchConsentDialog({ isOpen, onAccept, onClose }) {
+  const [isConfirmed, setIsConfirmed] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsConfirmed(false);
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className={styles.consentBackdrop}
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section
+        className={styles.consentDialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="research-consent-title"
+      >
+        <span className={styles.consentHandle} aria-hidden="true" />
+        <button className={styles.consentClose} type="button" onClick={onClose} aria-label="閉じる">
+          ×
+        </button>
+        <p className={styles.consentEyebrow}>BEFORE YOU START</p>
+        <h2 id="research-consent-title">あなたの回答を、<br />みんなの学びと研究に</h2>
+        <p className={styles.consentLead}>
+          CrossTalkに寄せられた回答は、個人が特定されない形で集計し、みんなが見られる形で紹介します。
+          回答結果やサイト内での行動を、卒業制作や今後の研究発表に活用することがあります。
+        </p>
+        <ul className={styles.consentPoints}>
+          <li>氏名やメールアドレスなど、個人を直接特定する情報は尋ねません。</li>
+          <li>自由記述には、氏名・病院名・施設名などを書かないでください。</li>
+          <li>参加は自由です。答えたくない場合は、いつでもやめられます。</li>
+        </ul>
+        <details className={styles.consentDetails}>
+          <summary>研究とデータ利用について詳しく見る</summary>
+          <p>
+            回答内容、年代・性別・医療や介護に関する経験、サイト内での操作を分析に使用する場合があります。
+            集計結果や、匿名化した自由記述の一部をWebサイト・卒業制作・研究発表で紹介することがあります。
+          </p>
+        </details>
+        <label className={styles.consentCheck}>
+          <input
+            type="checkbox"
+            checked={isConfirmed}
+            onChange={(event) => setIsConfirmed(event.target.checked)}
+          />
+          <span>内容を確認し、回答データの利用に同意します</span>
+        </label>
+        <button
+          className={styles.consentAccept}
+          type="button"
+          disabled={!isConfirmed}
+          onClick={onAccept}
+        >
+          同意して回答をはじめる
+        </button>
+        <button className={styles.consentDecline} type="button" onClick={onClose}>
+          今回は参加しない
+        </button>
+      </section>
+    </div>
   );
 }
 
@@ -415,11 +555,11 @@ function HowItWorks() {
   );
 }
 
-function ScrollytellingGeneral({ debate, topics, selectedSlug, onSelectTopic }) {
+function ScrollytellingGeneral({ debate, topics, selectedSlug, onSelectTopic, onRequireConsent }) {
   return (
     <section id="question" className={styles.scrollytelling}>
       <div className={styles.snapStory}>
-        <QuestionMainSection debate={debate} />
+        <QuestionMainSection debate={debate} onRequireConsent={onRequireConsent} />
         <AnswerMainSection debate={debate} />
         <AttributeCollectorSection debate={debate} />
         <ReasonInputSection debate={debate} />
@@ -438,7 +578,7 @@ function ScrollytellingGeneral({ debate, topics, selectedSlug, onSelectTopic }) 
   );
 }
 
-function QuestionMainSection({ debate }) {
+function QuestionMainSection({ debate, onRequireConsent }) {
   return (
     <section className={`${styles.snapSection} ${styles.questionSection}`}>
       <div className={styles.questionStack}>
@@ -455,7 +595,7 @@ function QuestionMainSection({ debate }) {
                 choice={choice}
                 isSelected={debate.selectedResponse?.choiceSide === choice.side}
                 isBusy={debate.status === "saving-choice"}
-                onSelect={async () => {
+                onSelect={() => onRequireConsent(async () => {
                   const saved = await debate.selectChoice(choice);
                   if (saved) {
                     document.getElementById("answer-result")?.scrollIntoView({
@@ -463,7 +603,7 @@ function QuestionMainSection({ debate }) {
                       block: "start",
                     });
                   }
-                }}
+                })}
               />
             </Fragment>
           ))}
@@ -835,6 +975,62 @@ function HighlightedOpinionsSection({ debate }) {
     () => sortResponses(debate.responses, sortMode, "con"),
     [debate.responses, sortMode],
   );
+  const mobileOpinions = useMemo(() => {
+    const totalAvailable = proOpinions.length + conOpinions.length;
+    const totalVisible = Math.min(
+      totalAvailable,
+      visibleCounts.pro + visibleCounts.con,
+    );
+    if (!totalVisible || !totalAvailable) return [];
+
+    const proWeight = Number(debate.counts?.pro ?? proOpinions.length);
+    const conWeight = Number(debate.counts?.con ?? conOpinions.length);
+    const totalWeight = proWeight + conWeight || totalAvailable;
+    let proTarget = Math.round(totalVisible * (proWeight / totalWeight));
+    if (proOpinions.length && conOpinions.length && totalVisible >= 2) {
+      proTarget = Math.min(totalVisible - 1, Math.max(1, proTarget));
+    }
+    proTarget = Math.min(proTarget, proOpinions.length);
+
+    let conTarget = Math.min(totalVisible - proTarget, conOpinions.length);
+    if (proTarget + conTarget < totalVisible) {
+      proTarget = Math.min(
+        proOpinions.length,
+        proTarget + (totalVisible - proTarget - conTarget),
+      );
+    }
+
+    const proItems = proOpinions.slice(0, proTarget);
+    const conItems = conOpinions.slice(0, conTarget);
+    const interleaved = [];
+    let proIndex = 0;
+    let conIndex = 0;
+    let proScore = 0;
+    let conScore = 0;
+    const targetTotal = proItems.length + conItems.length;
+
+    while (proIndex < proItems.length || conIndex < conItems.length) {
+      proScore += proItems.length;
+      conScore += conItems.length;
+
+      if (
+        proIndex < proItems.length
+        && (conIndex >= conItems.length || proScore >= conScore)
+      ) {
+        interleaved.push({ opinion: proItems[proIndex], color: "blue" });
+        proIndex += 1;
+        proScore -= targetTotal;
+      } else {
+        interleaved.push({ opinion: conItems[conIndex], color: "red" });
+        conIndex += 1;
+        conScore -= targetTotal;
+      }
+    }
+
+    return interleaved;
+  }, [conOpinions, debate.counts?.con, debate.counts?.pro, proOpinions, visibleCounts]);
+  const hasMoreMobileOpinions =
+    mobileOpinions.length < proOpinions.length + conOpinions.length;
 
   useEffect(() => {
     setVisibleCounts({ pro: 3, con: 3 });
@@ -851,8 +1047,19 @@ function HighlightedOpinionsSection({ debate }) {
     <section id="reasons" className={styles.longSection}>
       <SectionTitle
         title="みんなの理由"
-        description="気になった意見には「なるほど」または「う〜ん」でリアクションできます。"
+        description="回答前でも、気になった意見に「なるほど」または「う〜ん」でリアクションできます。"
       />
+      {!debate.ownResponseId ? (
+        <div className={styles.opinionAnswerPrompt}>
+          <span>みんなの意見を読んだら、あなたの考えもぜひ聞かせてください。</span>
+          <button
+            type="button"
+            onClick={() => document.getElementById("question")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          >
+            このテーマに回答する
+          </button>
+        </div>
+      ) : null}
       <OpinionSortBar
         sortMode={sortMode}
         onSortChange={setSortMode}
@@ -880,6 +1087,34 @@ function HighlightedOpinionsSection({ debate }) {
           questionSlug={debate.question.slug}
           sideLabels={sideLabels}
         />
+      </div>
+      <div className={styles.mobileOpinionTimeline}>
+        {mobileOpinions.length ? (
+          mobileOpinions.map(({ opinion, color }) => (
+            <OpinionCard
+              opinion={opinion}
+              color={color}
+              onReact={(reaction) => debate.reactToResponse(opinion.id, reaction)}
+              reactedWith={debate.reactionHistory[`${debate.question.slug}:${opinion.id}`]}
+              sideLabels={sideLabels}
+              key={opinion.id}
+            />
+          ))
+        ) : (
+          <p className={styles.emptyText}>理由文つきの回答がまだありません。</p>
+        )}
+        {hasMoreMobileOpinions ? (
+          <button
+            className={styles.mobileOpinionMoreButton}
+            type="button"
+            onClick={() => {
+              showMoreOpinions("pro");
+              showMoreOpinions("con");
+            }}
+          >
+            もっと見る
+          </button>
+        ) : null}
       </div>
     </section>
   );
@@ -978,8 +1213,8 @@ function OpinionCard({ opinion, color, onReact, reactedWith, sideLabels }) {
   const tags = opinion.analysis?.reasonTags ?? [];
   const attributeLabels = formatOpinionAttributes(opinion.attributes);
   return (
-    <article className={styles.opinionCard}>
-      <PrototypeIcon className={`${styles.avatar} ${styles[color]}`} />
+    <article className={`${styles.opinionCard} ${styles[`${color}OpinionCard`]}`}>
+      <OpinionAvatar opinion={opinion} color={color} />
       <div className={styles.opinionBody}>
         <p>{opinion.reason}</p>
         <small>
@@ -1019,8 +1254,11 @@ function OpinionCard({ opinion, color, onReact, reactedWith, sideLabels }) {
   );
 }
 
+function isAnswered(value) {
+  return Boolean(value && value !== "回答しない");
+}
+
 function formatOpinionAttributes(attributes = {}) {
-  const isAnswered = (value) => value && value !== "回答しない";
   const labels = [];
 
   if (isAnswered(attributes.ageGroup)) labels.push(attributes.ageGroup);
@@ -1350,18 +1588,53 @@ function TextMiningCard({ words }) {
   };
 
   return (
-    <article className={`${styles.analysisCard} ${styles.textMiningCard}`}>
-      <div className={styles.analysisHeader}>
-        <h3>テキストマイニング</h3>
-        <span>特徴語</span>
+    <details className={`${styles.analysisCard} ${styles.textMiningCard}`}>
+      <summary className={styles.textMiningSummary}>
+        <div>
+          <span>特徴語の分析</span>
+          <h3>テキストマイニング</h3>
+          <p>理由文によく出てくる言葉を確認できます。</p>
+        </div>
+        <strong aria-hidden="true">＋</strong>
+      </summary>
+      <div className={styles.textMiningContent}>
+        <p>理由文に出てくる特徴的なワードを、頻出度と立場の偏りで配置します。</p>
+        <div className={styles.wordMiningGrid}>
+          <WordCloudColumn title="賛成に多い語" color="blue" words={groupedWords.pro} />
+          <WordCloudColumn title="どちらにも出る語" color="neutral" words={groupedWords.neutral} />
+          <WordCloudColumn title="反対に多い語" color="red" words={groupedWords.con} />
+        </div>
       </div>
-      <p>理由文に出てくる特徴的なワードを、頻出度と立場の偏りで配置します。</p>
-      <div className={styles.wordMiningGrid}>
-        <WordCloudColumn title="賛成に多い語" color="blue" words={groupedWords.pro} />
-        <WordCloudColumn title="どちらにも出る語" color="neutral" words={groupedWords.neutral} />
-        <WordCloudColumn title="反対に多い語" color="red" words={groupedWords.con} />
-      </div>
-    </article>
+    </details>
+  );
+}
+
+function OpinionAvatar({ opinion, color }) {
+  const attributes = opinion.attributes ?? {};
+  const isMedicalWorker = ["はい", "あり"].includes(attributes.medicalExperience)
+    || isAnswered(attributes.medicalProfession);
+  const gender = attributes.gender === "男性"
+    ? "male"
+    : attributes.gender === "女性"
+      ? "female"
+      : "";
+  const ageMatch = String(attributes.ageGroup ?? "").match(/^(10|20|30|40|50|60|70|80|90)代/);
+
+  if (!isMedicalWorker || !gender || !ageMatch) {
+    return <PrototypeIcon className={`${styles.avatar} ${styles[color]}`} />;
+  }
+
+  const avatarPath = assetPath(
+    `/images/avatars/avatar-medical-${gender}-${ageMatch[1]}s.svg`,
+  );
+
+  return (
+    <span className={`${styles.avatar} ${styles.medicalAvatarFrame} ${styles[color]}`} aria-hidden="true">
+      <span
+        className={styles.medicalAvatarGlyph}
+        style={{ "--medical-avatar-mask": `url("${avatarPath}")` }}
+      />
+    </span>
   );
 }
 
