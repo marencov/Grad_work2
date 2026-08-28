@@ -936,9 +936,12 @@ function AttributeComparisonPanels({ panels }) {
   return (
     <div className={styles.segmentGrid}>
       {panels.map((panel) => (
-        <div className={styles.segmentCard} key={panel.title}>
-          <h3>{panel.title}</h3>
-          <div className={styles.segmentRows}>
+        <details className={styles.segmentCard} key={panel.title}>
+          <summary className={styles.segmentSummary}>
+            <h3>{panel.title}</h3>
+            <strong aria-hidden="true">＋</strong>
+          </summary>
+          <div className={`${styles.segmentRows} ${styles.segmentAccordionContent}`}>
             {panel.rows.map((row) => (
               <div className={styles.segmentNumberRow} key={row.label}>
                 <span>
@@ -952,7 +955,7 @@ function AttributeComparisonPanels({ panels }) {
               </div>
             ))}
           </div>
-        </div>
+        </details>
       ))}
     </div>
   );
@@ -1617,7 +1620,6 @@ function ScatterCard({ points, axisXLabel, axisYLabel, sideLabels }) {
 function TextMiningCard({ words }) {
   const groupedWords = {
     pro: words.filter((word) => word.side === "pro"),
-    neutral: words.filter((word) => word.side === "neutral"),
     con: words.filter((word) => word.side === "con"),
   };
 
@@ -1635,7 +1637,6 @@ function TextMiningCard({ words }) {
         <p>理由文に出てくる特徴的なワードを、頻出度と立場の偏りで配置します。</p>
         <div className={styles.wordMiningGrid}>
           <WordCloudColumn title="賛成に多い語" color="blue" words={groupedWords.pro} />
-          <WordCloudColumn title="どちらにも出る語" color="neutral" words={groupedWords.neutral} />
           <WordCloudColumn title="反対に多い語" color="red" words={groupedWords.con} />
         </div>
       </div>
@@ -2096,7 +2097,7 @@ function createTextMiningWords(responses) {
     return {
       ...word,
       side,
-      fontSize: Math.round(13 + (word.total / maxTotal) * 18),
+      fontSize: Math.round(12 + (word.total / maxTotal) * 13),
     };
   });
 }
