@@ -344,7 +344,7 @@ function ResearchConsentDialog({ isOpen, onAccept, onClose }) {
           ×
         </button>
         <p className={styles.consentEyebrow}>BEFORE YOU START</p>
-        <h2 id="research-consent-title">あなたの回答を、<br />みんなの学びと研究に</h2>
+        <h2 id="research-consent-title">あなたの回答を、<br />みんなの医療の未来のために</h2>
         <p className={styles.consentLead}>
           CrossTalkに寄せられた回答は、個人が特定されない形で集計し、みんなが見られる形で紹介します。
           回答結果やサイト内での行動を、卒業制作や今後の研究発表に活用することがあります。
@@ -519,10 +519,10 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
 
 function HowItWorks() {
   const steps = [
-    ["01", "テーマを選ぶ", "気になる医療の問いを選びます。"],
-    ["02", "立場を選ぶ", "賛成・反対、いまの考えを答えます。"],
-    ["03", "理由を書く", "そう考えた背景を自分の言葉で残します。"],
-    ["04", "意見を見比べる", "違いと共通点をデータから見つけます。"],
+    ["01", "テーマを選ぶ", "気になる医療の問いを選びましょう。"],
+    ["02", "立場を選ぶ", "賛成・反対、直感で選んでかまいません。"],
+    ["03", "理由を書く", "そう考えた理由を思いのままに書いてください。"],
+    ["04", "意見を見比べる", "みんなの意見を集計し、視覚化しAIが要約します。\nいろんな考えをみてみましょう！"],
   ];
 
   return (
