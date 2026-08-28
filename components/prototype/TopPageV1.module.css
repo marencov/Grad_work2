@@ -1363,13 +1363,13 @@
 .bigPercentRow strong {
   display: flex;
   align-items: baseline;
-  font-size: clamp(112px, 15vw, 210px);
-  font-weight: 500;
+  font-size: clamp(96px, 12vw, 168px);
+  font-weight: 700;
   line-height: 1;
 }
 
 .resultNumber {
-  letter-spacing: -0.075em;
+  letter-spacing: -0.05em;
 }
 
 .resultPercentSign {
@@ -2586,7 +2586,7 @@
   }
 
   .bigPercentRow strong {
-    font-size: clamp(96px, 13vw, 150px);
+    font-size: clamp(84px, 11vw, 130px);
   }
 
   .overallSummary strong {
@@ -3279,7 +3279,7 @@
   }
 
   .bigPercentRow strong {
-    font-size: clamp(64px, 22vw, 92px);
+    font-size: clamp(58px, 18vw, 76px);
   }
 
   .overallSummary strong {
