@@ -513,9 +513,6 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
           もっと見る
         </button>
       ) : null}
-      <a className={styles.startLink} href="#question">
-        さっそくはじめてみましょう！
-      </a>
     </section>
   );
 }
@@ -643,6 +640,12 @@ function AnswerMainSection({ debate }) {
     <section id="answer-result" className={styles.snapSection}>
       <div className={styles.answerPanel}>
         <h2 className={styles.answerTitle}>みんなの回答結果</h2>
+        <div
+          className={styles.resultPieChart}
+          style={{ "--pro-percent": `${proPercent}%` }}
+          role="img"
+          aria-label={`賛成側 ${proPercent}%、反対側 ${conPercent}%`}
+        />
         <div className={styles.bigPercentRow}>
           <strong className={styles.blueText}>{proPercent}%</strong>
           <span>vs</span>

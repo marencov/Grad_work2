@@ -1324,6 +1324,29 @@
   letter-spacing: 0;
 }
 
+.resultPieChart {
+  width: clamp(132px, 15vw, 180px);
+  aspect-ratio: 1;
+  justify-self: center;
+  background: conic-gradient(
+    var(--blue) 0 var(--pro-percent),
+    var(--red) var(--pro-percent) 100%
+  );
+  border: 8px solid white;
+  border-radius: 50%;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.14);
+}
+
+@media (min-width: 1025px) {
+  .hotTopicTrackStatic .hotTopicSet .topicCard {
+    display: flex;
+    aspect-ratio: 1;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+}
+
 .bigPercentRow {
   display: grid;
   grid-template-columns: 1fr 80px 1fr;
