@@ -393,14 +393,12 @@ function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onS
     : topics;
   const visibleTopics = showAllTopics ? filteredTopics : filteredTopics.slice(0, initialTopicCount);
   const hasMoreTopics = visibleTopics.length < filteredTopics.length;
-  const shouldMarquee = !showAllTopics && !selectedTheme && visibleTopics.length > 3;
 
-  const renderTopicCards = (isClone = false) => visibleTopics.map((topic) => (
+  const renderTopicCards = () => visibleTopics.map((topic) => (
     <TopicCard
-      key={`${isClone ? "clone-" : ""}${topic.slug || topic.title}`}
+      key={topic.slug || topic.title}
       topic={topic}
-      isActive={!isClone && selectedSlug === topic.slug}
-      isClone={isClone}
+      isActive={selectedSlug === topic.slug}
       onSelect={() => onSelectTopic(topic.slug)}
     />
   ));
@@ -417,13 +415,8 @@ function HotTopics({ topics, selectedSlug, selectedTheme, initialTopicCount, onS
         </div>
       ) : null}
       <div className={styles.hotTopicViewport}>
-        <div className={`${styles.hotTopicTrack} ${shouldMarquee ? styles.hotTopicTrackAnimated : styles.hotTopicTrackStatic}`}>
+        <div className={`${styles.hotTopicTrack} ${styles.hotTopicTrackStatic}`}>
           <div className={styles.hotTopicSet}>{renderTopicCards()}</div>
-          {shouldMarquee ? (
-            <div className={`${styles.hotTopicSet} ${styles.hotTopicCloneSet}`} aria-hidden="true">
-              {renderTopicCards(true)}
-            </div>
-          ) : null}
         </div>
       </div>
       {hasMoreTopics ? (
