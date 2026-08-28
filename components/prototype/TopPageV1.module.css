@@ -1375,6 +1375,26 @@
   font-weight: 700;
 }
 
+@media (min-width: 761px) {
+  .choiceCard {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 62px;
+  }
+
+  .choiceArrow {
+    position: absolute;
+    bottom: 17px;
+    left: 50%;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  .choiceCard.red .choiceCopy,
+  .choiceCard.red strong,
+  .choiceCard.red .choiceDescription {
+    text-align: right;
+  }
+}
+
 .answerPanel {
   position: relative;
   display: grid;
