@@ -1314,8 +1314,8 @@
   position: relative;
   display: grid;
   gap: clamp(14px, 2vh, 22px);
-  width: min(980px, 100%);
-  padding: clamp(24px, 4vh, 42px) clamp(34px, 5vw, 68px);
+  width: 100%;
+  padding: clamp(22px, 4vh, 40px) clamp(20px, 3vw, 44px);
   overflow: hidden;
   background:
     radial-gradient(circle at 8% 16%, rgba(59, 130, 246, 0.09), transparent 28%),
@@ -1325,6 +1325,10 @@
   border-radius: 34px;
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
   text-align: center;
+}
+
+.answerResultSection {
+  padding-inline: clamp(14px, 2.5vw, 36px);
 }
 
 .answerTitle {
@@ -1350,15 +1354,27 @@
 
 .bigPercentRow {
   display: grid;
-  grid-template-columns: 1fr 80px 1fr;
-  gap: 24px;
-  align-items: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 5vw, 72px);
+  align-items: baseline;
   margin: 0;
 }
 
 .bigPercentRow strong {
-  font-size: 72px;
+  display: flex;
+  align-items: baseline;
+  font-size: clamp(112px, 15vw, 210px);
   line-height: 1;
+}
+
+.resultNumber {
+  letter-spacing: -0.075em;
+}
+
+.resultPercentSign {
+  margin-left: 0.08em;
+  font-size: 0.28em;
+  letter-spacing: 0;
 }
 
 .bigPercentRow strong:first-child {
@@ -1371,7 +1387,6 @@
   text-align: right;
 }
 
-.bigPercentRow span,
 .segmentCard span {
   color: #334155;
   font-size: 18px;
@@ -2569,7 +2584,10 @@
     font-size: 27px;
   }
 
-  .bigPercentRow strong,
+  .bigPercentRow strong {
+    font-size: clamp(96px, 13vw, 150px);
+  }
+
   .overallSummary strong {
     font-size: 62px;
   }
@@ -3255,11 +3273,14 @@
   }
 
   .bigPercentRow {
-    grid-template-columns: 1fr 44px 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
-  .bigPercentRow strong,
+  .bigPercentRow strong {
+    font-size: clamp(64px, 22vw, 92px);
+  }
+
   .overallSummary strong {
     font-size: 46px;
   }

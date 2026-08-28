@@ -637,13 +637,18 @@ function AnswerMainSection({ debate }) {
   const conPercent = debate.counts.total ? 100 - proPercent : 0;
 
   return (
-    <section id="answer-result" className={styles.snapSection}>
+    <section id="answer-result" className={`${styles.snapSection} ${styles.answerResultSection}`}>
       <div className={styles.answerPanel}>
         <h2 className={styles.answerTitle}>みんなの回答結果</h2>
         <div className={styles.bigPercentRow}>
-          <strong className={styles.blueText}>{proPercent}%</strong>
-          <span>vs</span>
-          <strong className={styles.redText}>{conPercent}%</strong>
+          <strong className={styles.blueText}>
+            <span className={styles.resultNumber}>{proPercent}</span>
+            <span className={styles.resultPercentSign}>%</span>
+          </strong>
+          <strong className={styles.redText}>
+            <span className={styles.resultNumber}>{conPercent}</span>
+            <span className={styles.resultPercentSign}>%</span>
+          </strong>
         </div>
         <ResultSplit left={proPercent} right={conPercent} />
         <div className={styles.resultMetaRow}>
@@ -660,7 +665,7 @@ function AnswerMainSection({ debate }) {
             })
           }
         >
-          <span>詳しい理由を見る</span>
+          <span>詳しい理由を見てみよう</span>
           <i aria-hidden="true" />
         </button>
       </div>
