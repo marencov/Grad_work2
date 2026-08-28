@@ -1364,6 +1364,7 @@
   display: flex;
   align-items: baseline;
   font-size: clamp(112px, 15vw, 210px);
+  font-weight: 500;
   line-height: 1;
 }
 
