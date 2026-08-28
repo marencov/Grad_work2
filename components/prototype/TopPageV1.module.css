@@ -3472,6 +3472,7 @@
 
   .choicePanel {
     gap: 12px;
+    justify-self: center;
   }
 
   .orBadge {
@@ -3500,7 +3501,7 @@
 
   .questionSection {
     width: 100%;
-    padding-inline: 14px;
+    padding-inline: 20px;
     background:
       radial-gradient(circle at 0% 12%, rgba(59, 130, 246, 0.09), transparent 38%),
       radial-gradient(circle at 100% 88%, rgba(239, 68, 68, 0.08), transparent 38%),
