@@ -3284,7 +3284,7 @@
   }
 
   .bigPercentRow strong {
-    font-size: clamp(58px, 18vw, 76px);
+    font-size: clamp(65px, 20vw, 86px);
   }
 
   .overallSummary strong {
@@ -3302,6 +3302,16 @@
     border: 0;
     border-radius: 0;
     box-shadow: none;
+    transform: translateY(40px);
+  }
+
+  .answerPanel .splitBar {
+    flex: 0 0 10px;
+    height: 10px;
+  }
+
+  .answerPanel .scrollNextButton {
+    margin-top: 4px;
   }
 
   .resultMeta strong {
