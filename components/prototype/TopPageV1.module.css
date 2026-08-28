@@ -1250,17 +1250,41 @@
 }
 
 .choiceCard {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 28px;
+  gap: 24px;
   align-items: center;
   justify-content: center;
   min-height: 260px;
-  padding: 34px;
+  padding: 38px 34px 38px 42px;
+  overflow: hidden;
   border: 1px solid;
   border-radius: 24px;
   box-shadow: 0 18px 44px rgba(15, 23, 42, 0.045);
   cursor: pointer;
+  text-align: left;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.choiceCard::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 9px;
+  background: currentColor;
+  content: "";
+}
+
+.choiceCard.red::before {
+  right: 0;
+  left: auto;
+}
+
+.choiceCard:not(:disabled):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.1);
 }
 
 .choiceCard:disabled,
@@ -1275,37 +1299,79 @@
 }
 
 .choiceCard strong {
-  font-size: 31px;
+  font-size: clamp(24px, 2vw, 31px);
   line-height: 1.38;
-  text-align: center;
+  text-align: left;
 }
 
-.choiceCard span {
+.choiceCard .choiceDescription {
   color: var(--muted);
   font-size: 16px;
   font-weight: 700;
+  line-height: 1.65;
 }
 
-.choiceIcon,
-.choiceArrow,
-.choiceDivider {
-  display: none;
+.choiceIcon {
+  display: grid;
+  width: 92px;
+  height: 92px;
+  place-items: center;
+  color: currentColor;
+  border-radius: 50%;
 }
 
 .choiceCopy {
-  display: contents;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  color: inherit;
+}
+
+.choiceDivider {
+  display: block;
+  width: 100%;
+  border-top: 2px dotted currentColor;
+  opacity: 0.55;
+}
+
+.choiceArrow {
+  display: block;
+  align-self: center;
+  color: currentColor;
+  font-size: 44px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.choiceIcon svg {
+  width: 58px;
+  height: 58px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
 }
 
 .blue {
   color: var(--blue);
-  background: var(--blue-soft);
+  background: linear-gradient(135deg, #f8fbff 0%, var(--blue-soft) 100%);
   border-color: #bfdbfe;
+}
+
+.choiceCard.blue .choiceIcon {
+  background: #dbeafe;
 }
 
 .red {
   color: var(--red);
-  background: var(--red-soft);
+  background: linear-gradient(135deg, #fffafa 0%, var(--red-soft) 100%);
   border-color: #fecaca;
+}
+
+.choiceCard.red .choiceIcon {
+  background: #fee2e2;
 }
 
 .orBadge {
@@ -2702,11 +2768,16 @@
 
   .choicePanel {
     grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
     max-width: 560px;
   }
 
+  .choiceCard {
+    min-height: 220px;
+  }
+
   .questionStack {
-    gap: 24px;
+    gap: 18px;
   }
 
   .orBadge {
