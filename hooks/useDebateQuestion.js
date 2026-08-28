@@ -6,6 +6,7 @@ import { isSupabaseReady, supabaseClient } from "@/lib/supabaseClient";
 const DEFAULT_QUESTION_SLUG = "life-support-treatment";
 const LOCAL_KEY_PREFIX = "crosstalk_debate";
 const REACTION_KEY = "crosstalk_debate_reactions";
+const EDIT_TOKEN_KEY_PREFIX = "crosstalk_debate_edit_token";
 const QUESTION_VERSION = "2026-08-13-v1";
 
 function readReactionHistory() {
@@ -19,6 +20,47 @@ function readReactionHistory() {
 
 function writeReactionHistory(history) {
   window.localStorage.setItem(REACTION_KEY, JSON.stringify(history));
+}
+
+function getEditTokenKey(responseId) {
+  return `${EDIT_TOKEN_KEY_PREFIX}:${responseId}`;
+}
+
+function createEditToken() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function sha256Hex(value) {
+  const encoded = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", encoded);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function saveEditToken(responseId, token) {
+  window.localStorage.setItem(getEditTokenKey(responseId), token);
+}
+
+function readEditToken(responseId) {
+  return window.localStorage.getItem(getEditTokenKey(responseId)) || "";
+}
+
+async function updateOwnedRemoteResponse(responseId, payload) {
+  const editToken = readEditToken(responseId);
+  if (!editToken) {
+    throw new Error("この回答の編集情報が見つかりません。もう一度テーマを選択してください。");
+  }
+
+  const { error } = await supabaseClient.functions.invoke("update-debate-response", {
+    body: { responseId, editToken, ...payload },
+  });
+
+  if (error) {
+    const details = await readFunctionError(error);
+    throw new Error(
+      `回答の更新に失敗しました: ${typeof details === "string" ? details : JSON.stringify(details)}`,
+    );
+  }
 }
 
 export const DEBATE_QUESTION_CATALOG = [
@@ -849,6 +891,8 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
           throw new Error("Supabaseの選択肢データを取得できませんでした。");
         }
 
+        const editToken = createEditToken();
+        const editTokenHash = await sha256Hex(editToken);
         const { data, error: insertError } = await supabaseClient
           .from("debate_responses")
           .insert({
@@ -859,12 +903,14 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
               questionVersion: QUESTION_VERSION,
               completionStatus: "choice-selected",
             },
+            edit_token_hash: editTokenHash,
           })
           .select("*")
           .single();
 
         if (insertError) throw insertError;
         const response = normalizeResponse(data);
+        saveEditToken(response.id, editToken);
         setOwnResponseId(response.id);
         await refreshRemote();
         setStatus("idle");
@@ -907,12 +953,10 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
           return true;
         }
 
-        const { error: updateError } = await supabaseClient
-          .from("debate_responses")
-          .update({ attributes: nextAttributes })
-          .eq("id", responseId);
-
-        if (updateError) throw updateError;
+        await updateOwnedRemoteResponse(responseId, {
+          operation: "attributes",
+          attributes: nextAttributes,
+        });
         await refreshRemote();
         setStatus("idle");
         showMessage("属性情報を保存しました。");
@@ -1008,23 +1052,19 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
 
         const currentResponse = responses.find((response) => response.id === responseId);
         const responseDurationSeconds = getResponseDurationSeconds(currentResponse?.createdAt, answeredAt);
-        const { error: updateError } = await supabaseClient
-          .from("debate_responses")
-          .update({
-            reason: normalizedReason,
-            attributes: {
-              ...(currentResponse?.attributes ?? {}),
-              answeredAt,
-              questionVersion: currentResponse?.attributes?.questionVersion ?? QUESTION_VERSION,
-              completionStatus: "completed",
-              responseDurationSeconds,
-              reasonAnswered: hasReason,
-              ...displayEnvironment,
-            },
-          })
-          .eq("id", responseId);
-
-        if (updateError) throw updateError;
+        await updateOwnedRemoteResponse(responseId, {
+          operation: "reason",
+          reason: normalizedReason,
+          attributes: {
+            ...(currentResponse?.attributes ?? {}),
+            answeredAt,
+            questionVersion: currentResponse?.attributes?.questionVersion ?? QUESTION_VERSION,
+            completionStatus: "completed",
+            responseDurationSeconds,
+            reasonAnswered: hasReason,
+            ...displayEnvironment,
+          },
+        });
 
         if (!hasReason) {
           await refreshRemote();
@@ -1207,11 +1247,10 @@ export function useDebateQuestion(questionSlug = DEFAULT_QUESTION_SLUG) {
           writeLocalState(selectedSlug, { ...state, responses: nextResponses });
           refreshLocal();
         } else {
-          const { error: updateError } = await supabaseClient
-            .from("debate_responses")
-            .update({ attributes: nextAttributes })
-            .eq("id", responseId);
-          if (updateError) throw updateError;
+          await updateOwnedRemoteResponse(responseId, {
+            operation: "attributes",
+            attributes: nextAttributes,
+          });
           await refreshRemote();
         }
 

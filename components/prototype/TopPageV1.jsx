@@ -462,7 +462,11 @@ function TopicCard({ topic, isActive = false, isClone = false, onSelect }) {
           <span key={tag}>{tag}</span>
         ))}
       </div>
-      <p>{Number(topic.answers ?? 0).toLocaleString("ja-JP")}人が回答</p>
+      <p>
+        {Number(topic.answers ?? 0) > 0
+          ? `${Number(topic.answers).toLocaleString("ja-JP")}人が回答`
+          : "回答募集中"}
+      </p>
     </article>
   );
 }
@@ -502,7 +506,11 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
               <h3>{theme.label}</h3>
               <div className={styles.categoryMeta}>
                 <span>{theme.questionCount}件の設問</span>
-                <strong>{theme.answerCount.toLocaleString("ja-JP")}件の回答</strong>
+                <strong>
+                  {theme.answerCount > 0
+                    ? `${theme.answerCount.toLocaleString("ja-JP")}件の回答`
+                    : "回答募集中"}
+                </strong>
               </div>
             </div>
           </button>

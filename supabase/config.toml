@@ -19,6 +19,9 @@ verify_jwt = false
 [functions.increment-debate-response-reaction]
 verify_jwt = false
 
+[functions.update-debate-response]
+verify_jwt = false
+
 [functions.analyze-overall]
 # 全体解析もログインなしの展示プロトタイプから呼ぶため、JWT検証をオフにします。
 # 公開運用ではレート制限やBot対策を検討してください。
