@@ -33,6 +33,36 @@ const HIDDEN_TOPIC_SLUGS = new Set([
   "liberalization-of-medical-advertising",
 ]);
 
+const THEME_ICON_FILES = {
+  "終末期医療": "end-of-life-care.svg",
+  "人生会議": "advance-care-planning.svg",
+  "尊厳死": "death-with-dignity.svg",
+  "高齢者医療": "geriatric-care.svg",
+  "介護": "long-term-care.svg",
+  "医療安全": "patient-safety.svg",
+  "救急医療": "emergency-medicine.svg",
+  AED: "aed.svg",
+  "ジェンダー": "gender.svg",
+  "医療費": "healthcare-costs.svg",
+  "公平性": "equity.svg",
+  "感染症": "infectious-diseases.svg",
+  "抗菌薬適正使用": "antimicrobial-stewardship.svg",
+  "医療資源": "healthcare-resources.svg",
+  "自由診療": "private-medical-care.svg",
+  "マンジャロ問題": "mounjaro-issue.svg",
+  "待ち時間": "consultation-time.svg",
+  "外来診療": "outpatient-care.svg",
+  "患者満足": "patient-satisfaction.svg",
+  "医療現場": "healthcare-workplace.svg",
+  "医療事故": "medical-errors.svg",
+  "オンライン診療": "telemedicine.svg",
+  "医療DX": "digital-health.svg",
+  "医療AI": "medical-ai.svg",
+  "安楽死": "euthanasia.svg",
+  "倫理": "medical-ethics.svg",
+  "診察時間": "consultation-time.svg",
+};
+
 const RESEARCH_CONSENT_VERSION = "2026-08-28";
 const RESEARCH_CONSENT_STORAGE_KEY = "crosstalk-research-consent";
 
@@ -501,7 +531,7 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
             aria-pressed={selectedTheme === theme.label}
             onClick={() => onSelectTheme(theme.label)}
           >
-            <PrototypeIcon />
+            <ThemeIcon theme={theme.label} />
             <div className={styles.categoryCardBody}>
               <h3>{theme.label}</h3>
               <div className={styles.categoryMeta}>
@@ -525,12 +555,24 @@ function Categories({ themes, selectedTheme, initialThemeCount, onSelectTheme })
   );
 }
 
+function ThemeIcon({ theme }) {
+  const iconFile = THEME_ICON_FILES[theme];
+
+  if (!iconFile) return <PrototypeIcon />;
+
+  return (
+    <span className={styles.themeIcon} aria-hidden="true">
+      <img src={assetPath(`/images/themes/${iconFile}`)} alt="" />
+    </span>
+  );
+}
+
 function HowItWorks() {
   const steps = [
-    ["01", "テーマを選ぶ", "気になる医療の問いを選びましょう。"],
-    ["02", "立場を選ぶ", "賛成・反対、直感で選んでかまいません。"],
-    ["03", "理由を書く", "そう考えた理由を思いのままに書いてください。"],
-    ["04", "意見を見比べる", "みんなの意見を集計し、視覚化しAIが要約します。\nいろんな考えをみてみましょう！"],
+    ["01", "テーマを選ぶ", "気になる医療の問いを選びましょう。", "双眼鏡アイコン4.svg"],
+    ["02", "立場を選ぶ", "賛成・反対、直感で選んでかまいません。", "天秤アイコン1.svg"],
+    ["03", "理由を書く", "そう考えた理由を思いのままに書いてください。", "鉛筆を持つ手のアイコン.svg"],
+    ["04", "意見を見比べる", "みんなの意見を集計し、視覚化しAIが要約します。\nいろんな考えをみてみましょう！", "吹き出しのアイコン4.svg"],
   ];
 
   return (
@@ -539,9 +581,12 @@ function HowItWorks() {
       <h2 id="mobile-flow-title">考えを届ける、4つのステップ</h2>
       <p className={styles.mobileFlowLead}>答えるたびに、みんなの医療観が少しずつ見えてきます。</p>
       <div className={styles.mobileFlowList}>
-        {steps.map(([number, title, description], index) => (
+        {steps.map(([number, title, description, icon], index) => (
           <article className={styles.mobileFlowCard} key={number}>
-            <span>{number}</span>
+            <span className={styles.mobileFlowIcon}>
+              <img src={assetPath(`/images/avatars/${icon}`)} alt="" />
+              <small>{number}</small>
+            </span>
             <div>
               <h3>{title}</h3>
               <p>{description}</p>
@@ -1633,22 +1678,28 @@ function OpinionAvatar({ opinion, color }) {
       ? "female"
       : "";
   const ageMatch = String(attributes.ageGroup ?? "").match(/^(10|20|30|40|50|60|70|80|90)代/);
-
-  if (!isMedicalWorker || !gender || !ageMatch) {
-    return <PrototypeIcon className={`${styles.avatar} ${styles[color]}`} />;
-  }
-
+  const avatarSeed = getStableAvatarSeed(opinion.id ?? opinion.reason);
+  const resolvedGender = gender || (avatarSeed % 2 === 0 ? "male" : "female");
+  const resolvedAge = ageMatch?.[1] ?? String((Math.floor(avatarSeed / 2) % 9 + 1) * 10);
+  const audience = isMedicalWorker && gender && ageMatch ? "medical" : "general";
   const avatarPath = assetPath(
-    `/images/avatars/avatar-medical-${gender}-${ageMatch[1]}s.svg`,
+    `/images/avatars/avatar-${audience}-${resolvedGender}-${resolvedAge}s.svg`,
   );
 
   return (
-    <span className={`${styles.avatar} ${styles.medicalAvatarFrame} ${styles[color]}`} aria-hidden="true">
+    <span className={`${styles.avatar} ${styles.opinionAvatarFrame} ${styles[color]}`} aria-hidden="true">
       <span
-        className={styles.medicalAvatarGlyph}
-        style={{ "--medical-avatar-mask": `url("${avatarPath}")` }}
+        className={styles.opinionAvatarGlyph}
+        style={{ "--opinion-avatar-mask": `url("${avatarPath}")` }}
       />
     </span>
+  );
+}
+
+function getStableAvatarSeed(value) {
+  return Array.from(String(value ?? "anonymous")).reduce(
+    (hash, character) => ((hash * 31) + character.codePointAt(0)) >>> 0,
+    0,
   );
 }
 
@@ -1690,7 +1741,11 @@ function AIAnalysisCardDynamic({ snapshot }) {
       <p>{snapshot?.neutralAnalysisText || "理由文が集まると、ここに全体の論点整理が表示されます。"}</p>
       {standoutResponses.map((item) => (
         <div className={styles.analysisPoint} key={item.responseId}>
-          <PrototypeIcon className={styles.analysisIcon} />
+          <img
+            className={styles.analysisIcon}
+            src={assetPath(`/images/themes/${item.side === "pro" ? "pros.svg" : "cons.svg"}`)}
+            alt=""
+          />
           <div>
             <h4>{item.side === "pro" ? "賛成側の注目意見" : "反対側の注目意見"}</h4>
             <p>{item.why || item.reason}</p>
@@ -1715,7 +1770,11 @@ function AIAnalysisCard({ snapshot }) {
       <p>{snapshot?.neutralAnalysisText || "理由文が集まると、ここに全体の論点整理が表示されます。"}</p>
       {standoutResponses.map((item) => (
         <div className={styles.analysisPoint} key={item.responseId}>
-          <PrototypeIcon className={styles.analysisIcon} />
+          <img
+            className={styles.analysisIcon}
+            src={assetPath(`/images/themes/${item.side === "pro" ? "pros.svg" : "cons.svg"}`)}
+            alt=""
+          />
           <div>
             <h4>{item.side === "pro" ? "積極派の注目意見" : "自然経過派の注目意見"}</h4>
             <p>{item.why || item.reason}</p>

@@ -10,6 +10,9 @@ const notoSansJp = Noto_Sans_JP({
 export const metadata = {
   title: "CrossTalk",
   description: "医療のちがいを集めて、よりよい対話をつくる参加型Webサイトです。",
+  icons: {
+    icon: "/CrossTalk/images/icons/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {

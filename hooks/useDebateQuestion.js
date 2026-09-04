@@ -177,8 +177,22 @@ export const DEBATE_QUESTION_CATALOG = [
     answerCount: 0,
   },
   {
+    slug: "hospital-wait-times",
+    title: "病院の待ち時間は\n長すぎる？",
+    description: "現在の病院の待ち時間を、医療の質や現場の負担も含めて考える問いです。",
+    fieldTags: ["待ち時間", "外来診療", "患者満足", "医療現場"],
+    axisXLabel: "診療の丁寧さ↔待ち時間の短縮",
+    axisYLabel: "現状への問題意識",
+    choices: {
+      pro: { label: "長すぎる", description: "患者の時間的負担を減らす改善が必要" },
+      con: { label: "ある程度は仕方がない", description: "安全で丁寧な診療のためには一定の待ち時間が必要" },
+    },
+    reasonTagSeeds: ["患者の時間", "予約制度", "人手不足", "診療の丁寧さ", "業務効率", "緊急患者の優先"],
+    answerCount: 0,
+  },
+  {
     slug: "license-revocation-for-medical-errors",
-    title: "医療ミスをした医師は\n免許剥奪すべき？",
+    title: "医療ミスをした人は\n免許剥奪すべき？",
     description: "医療ミスを無くすためには、処分を重くするべきでしょうか？",
     fieldTags: ["医療事故", "医療安全"],
     axisXLabel: "厳しい責任追及↔再発防止と改善",

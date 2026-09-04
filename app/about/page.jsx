@@ -25,16 +25,17 @@ export default function AboutPage() {
       <section className={styles.visualStatement}>
         <div>
           <p className={styles.sectionLabel}>VISUAL COMMUNICATION</p>
-          <h2>医療の対話を、<br />見える形に。</h2>
+          <h2><span>医療の対話を、</span><span>見える形に。</span></h2>
           <p>
             CrossTalkは、<strong>グラフィックレコーディングとインフォグラフィック</strong>を活かして、複雑な医療の議論をわかりやすく可視化する作品です。文章を読むだけでは気づきにくい意見の分布、共通点、価値観の違いを、直感的に発見できる体験を目指しています。
           </p>
         </div>
-        <div className={styles.visualMark} aria-hidden="true">
-          <span className={styles.speechMark}>意見</span>
-          <b>→</b>
-          <div className={styles.chartMark}><i /><i /><i /><i /><i /></div>
-          <small>違いが見える</small>
+        <div className={styles.visualJourney} aria-label="さまざまな意見を整理・可視化し、違いと共通点を発見する流れ">
+          <div><img src="/CrossTalk/images/icons/why-multitalk.svg" alt="" /><strong>さまざまな意見</strong></div>
+          <b aria-hidden="true">→</b>
+          <div><img src="/CrossTalk/images/icons/why-visualize.svg" alt="" /><strong>整理・可視化</strong></div>
+          <b aria-hidden="true">→</b>
+          <div><img src="/CrossTalk/images/icons/why-infographic.svg" alt="" /><strong>違いと共通点が見える</strong></div>
         </div>
       </section>
 
@@ -43,9 +44,9 @@ export default function AboutPage() {
         <h2>医療は、なぜ分かり合いにくいのか</h2>
         <p className={styles.lead}>医療は専門知識の差が大きい一方で、誰もがいつか当事者になります。しかし、医療従事者と一般市民が、互いの考え方や価値観を知る機会は多くありません。</p>
         <div className={styles.gapDiagram} aria-label="医療従事者と一般市民の認識の隔たり">
-          <div className={`${styles.personCard} ${styles.medicalCard}`}><span className={styles.personIcon} aria-hidden="true">＋</span><strong>医療従事者</strong><small>知識・安全・現場の制約</small></div>
+          <div className={`${styles.personCard} ${styles.medicalCard}`}><img className={styles.personIcon} src="/CrossTalk/images/icons/why-doctor.svg" alt="" /><strong>医療従事者</strong><small>知識・安全・現場の制約</small></div>
           <div className={styles.gapCenter}><span>認識の齟齬</span><div aria-hidden="true"><i /><b>?</b><i /></div><small>摩擦・不信・すれ違い</small></div>
-          <div className={`${styles.personCard} ${styles.citizenCard}`}><span className={styles.personIcon} aria-hidden="true">○</span><strong>一般市民・患者</strong><small>経験・不安・生活の価値観</small></div>
+          <div className={`${styles.personCard} ${styles.citizenCard}`}><img className={styles.personIcon} src="/CrossTalk/images/icons/why-patient.svg" alt="" /><strong>一般市民・患者</strong><small>経験・不安・生活の価値観</small></div>
         </div>
         <p>同じ出来事を見ても、持っている情報や置かれた状況によって受け止め方は変わります。その違いが見えないままだと、説明不足、不信、過度な期待、医療者の萎縮など、双方にとって息苦しい状況につながります。</p>
       </section>
@@ -54,9 +55,9 @@ export default function AboutPage() {
         <p className={styles.sectionLabel}>WHY SOCIAL?</p>
         <h2>SNSの力を、分断ではなく対話へ</h2>
         <div className={styles.snsComparison}>
-          <article><span className={styles.minus}>−</span><h3>SNSが抱える問題</h3><p>刺激の強い意見が広がりやすく、似た価値観だけが集まることで、対立や分断が深まりやすい。</p></article>
+          <article className={styles.snsProblemCard}><img className={styles.snsIllustration} src="/CrossTalk/images/icons/why-separation.svg" alt="" /><h3>SNSが抱える問題</h3><p>刺激の強い意見が広がりやすく、似た価値観だけが集まることで、対立や分断が深まりやすい。</p></article>
           <div className={styles.transformArrow} aria-hidden="true">→</div>
-          <article><span className={styles.plus}>＋</span><h3>SNSが持つ可能性</h3><p>誰もが気軽に声を上げ、多くの人の経験や価値観を集め、議論へ参加するきっかけをつくれる。</p></article>
+          <article className={styles.snsPotentialCard}><img className={styles.snsIllustration} src="/CrossTalk/images/icons/why-crosstalk.svg" alt="" /><h3>SNSが持つ可能性</h3><p>誰もが気軽に声を上げ、多くの人の経験や価値観を集め、議論へ参加するきっかけをつくれる。</p></article>
         </div>
         <p className={styles.highlight}>CrossTalkは、SNSの「参加しやすさ」を活かしながら、意見を競わせるのではなく、違いを発見する体験へと組み替えます。</p>
       </section>
